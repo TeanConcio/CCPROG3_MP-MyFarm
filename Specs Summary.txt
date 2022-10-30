@@ -1,0 +1,257 @@
+Title: MyFarm
+
+
+Questions:
+	- Fertilizer either happening before or after planting
+	- Plow or Shovel removing withered plants
+		~ Plow paying either 10% or 2 OC to remove
+	- Withered crop stays indefinitely or x2 Harvesting time
+
+
+
+
+
+I. Premise
+	Discount Stardew Valley with only Farming
+
+
+
+
+
+II. Possible Actions In A Day
+
+	1. Buy Seeds
+	2. Prepare / Plow Land
+	3. Planting Seeds
+	4. Advancing Days / Wait Crops Grow
+	5. Harvesting Crops
+
+
+
+
+
+III. End Conditions
+	- Can go on until forever until:
+	
+	A. 
+		1. No seeds
+		2. No growing or active crops
+		3. No money for seeds
+		
+	B. 
+		1. Farm only contains withered crops
+		2. No money to use shovel tool
+
+
+
+
+
+IV. Starting Equipment
+	1. 10 by 5 farm plot
+	2. 0 seeds
+	3. 5 fertilizer
+	4. 100 Objectcoins
+	5. Farmer Level 0
+
+
+
+
+
+V. Farming Process
+	1. Starting farm only has unplowed tiles at the start
+	2. Farmer needs to plow land using plowing tool
+	3. After plowing, has option to plant seeds or fertilize
+	4. After plant seed, has option to water
+	5. Plants stay on the tile forever unless harvested
+	6. Plants will wither if not taken care of
+		- If withered, then tile cannot be used anymore
+	7. Crop can be harvested after passed minimum requirements and time
+		- If missed harvest time, crops become withered
+	8. Harvested crops return n number of produce and are automatically sold for coins
+		- Number of produce depends on crop
+	9. Farmer earns Farming XP from successfully grown crops
+	10. After harvesting, tile will be converted back to unplowed tiles
+	
+
+
+
+
+VI. Rocks
+
+	A. Rock Mechanics
+		- Rocks are scattered around the 10x5 farm at first
+		- Rocks prevent any action on the tile apart from remove rock
+		- Removing rock requires using pickaxe tool that costs 50 Objectcoins
+			~ After removal, tile becomes an unplowed tile
+	
+	B. Rock Generation
+		- Rock generation is gotten from a file input
+		- File is read at the start of the game
+			~ Assume input file is always valid format
+		- Can be any rock formation
+			~ Limited to 10 - 30 rocks
+
+
+
+
+
+VII. Withered Crops
+
+	A. Removing Withered Crops
+		- Withered crops stay on the tile forever unless using shovel tool
+		- Shovel tool requires 7 Objectcoins to be used to remove withered crop
+		- Shoveled withered crops convert to unplowed tiles
+	
+	B. Using Shovel Outside of Intended Purpose
+		- All actions require 7 Objectcoins
+		1. Using Shovel to a unplowed tile does nothing
+		2. Using Shovel on a plowed tile will make it unplowed
+		3. Using Shovel on a crop tile will remove the plant and make the tile unplowed
+		4. Using Shovel on a watered and/or fertilized tile will remove its status
+
+
+
+
+
+VIII. Farm Progression
+	
+	A. Level Mechanics
+		- Player gains a specific amount of XP per harvested crop
+		- Player start with 0 XP
+		- After enough XP, Player will level up
+		- Player levels up in increments of 100
+		
+	B. Farm Registration
+		- After certain levels, player can register their farm
+		- Registration is not automatic
+			~ Players need to manually register
+		- Registration has a cost but brings benefits
+			~ Some benefits include increase harvest price and spending less for purchases
+				*** Consider this for the Crop Price
+		- Registration has 4 tiers at level 0, 10, 15, 20
+
+
+
+
+
+IX. Farming Tools
+	
+	A. Watering Can
+		- Water a crop tile
+		- Has infinite water
+	
+	B. Plow
+		- Prepares a tile for plating
+		- Removes withered plants for 2 OC ?????
+	
+	C. Shovel
+		- Removes withered plants for 7 OC
+	
+	D. Pickaxe
+		- Removes rocks for 50 OC
+	
+	E. Fertilizer
+		- Fertilizes a tile
+		- Bought in finite amounts
+			~ Costs 10 OC
+		- Player starts with 5 fertilizers
+		- Must be placed on a plowed tile
+			~ Cannot be placed on a plant tile
+
+
+
+
+
+X. Player Vision
+		
+	A. Farm Field
+		- Place to plant crops
+		- Is 10 by 5 tiles big
+		- All tiles are at first unplowed or has rocks
+		- Player should be able to see each tile and its status
+		- Statuses:
+			unplowed
+			rocks
+			plowed
+			fertilized
+			watered
+			occupied by crop
+			occupied by withered crop
+	
+	B. Player Inventory
+		- Should display tools and seeds
+	
+	C. Tool Tips
+		- An area that shows status of selected objects
+		1. Select Tile
+			- Show information and status of tile
+		2. Select Tool
+			- Shows tool information and tool options
+		3. Select Seed
+			- Shows seed information and options to either plant or buy more
+
+
+
+
+
+XI. Seeds
+	- Grows into crops
+	- Each seed takes 1 tile
+		~ Except Fruit Trees
+	- Different crops have different needs of water, fertilizer, and time
+	
+	A. Crop Types
+		1. Vegetables
+		2. Flowers
+			- Have crop bonus cuz they are pretty
+		3. Fruit Trees
+			- All adjacent tiles should not have crops
+	
+	B. Crop Stats
+		1. Seed Name
+			- Name of the Crop
+		2. Crop Type
+			- Type of plant the crop is
+		3. Harvest Time in Minutes
+			- How long it takes to harvest the crop
+			- Crops need to be harvested within a minute of being ready
+				~ Else withers
+		4. Water Needed
+			- Minimum times watered to yield
+			a. Bonus Limit
+				- Limit for Water Bonus
+		5. Fertilizer Needed
+			- Minimum fertilizers used before planting to yield
+			a. Bonus Limit
+				- Fertilizer for Fertilizer Bonus
+		6. Harvest Cost
+			- Cost to harvest the Crop
+		7. Number of Produce Produced
+			- n Number of Produce Produced per harvest
+			- Immediately sold upon harvest
+		8. Seed Cost
+			- Price to buy the seed
+		9. Base Selling Cost per Piece Produced
+			- Base Selling Cost of each piece of produce
+	
+	C. Crop Product Selling Price Equation
+		- Indicates the actual selling price of an individual crop's produce
+				sp = flb + bp + wb + fb + cb
+			~ sp  : Selling Price
+			  flb : Farmer Level Bonus
+			  bp  : base price
+			  wb  : water bonus
+					wb = times watered * 0.25 * bp
+			  fb  : fertilizer bonus
+					fb = fertilizers used * 0.50 * bp
+			  cb  : crop bonus (Only for flowers)
+					cb = 0.05 * bp * wb * fb
+	
+	D. Harvesting
+		- If water and fertilizer needs are not met at the time of harvesting they will not produce a produce and will wither
+		- Products disappear after 1 minutes of not harvesting and the crop will wither
+		- Player is alerted if success or failure of harvest, produced products, and how much profit
+		- A withered crop stays on the tile for the duration of x2 crop's Harvest Time ???
+			~ To remove withered crop, pay 10% of Seed Cost to the plow tool
+	
+	
