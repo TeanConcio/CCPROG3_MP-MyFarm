@@ -15,7 +15,8 @@ public class Plant {
     private int intFertilizerLimit;
     private int intHarvestEXP;
     private int intHarvestCost;
-    private int intProduceProduced;
+    private int intMinProductsProduced;
+    private int intMaxProductsProduced;
     private int intSeedCost;
     private int intBaseProducePrice;
 
@@ -34,7 +35,8 @@ public class Plant {
                   int intFertilizerLimit,
                   int intHarvestEXP,
                   int intHarvestCost,
-                  int intProduceProduced,
+                  int intMinProductsProduced,
+                    int intMaxProductsProduced,
                   int intSeedCost,
                   int intBaseProducePrice) {
 
@@ -47,7 +49,8 @@ public class Plant {
         this.intFertilizerLimit = intFertilizerLimit;
         this.intHarvestEXP = intHarvestEXP;
         this.intHarvestCost = intHarvestCost;
-        this.intProduceProduced = intProduceProduced;
+        this.intMinProductsProduced = intMinProductsProduced;
+        this.intMaxProductsProduced = intMaxProductsProduced;
         this.intSeedCost = intSeedCost;
         this.intBaseProducePrice = intBaseProducePrice;
     }
@@ -147,8 +150,11 @@ public class Plant {
     public int getIntHarvestCost() {return intHarvestCost;}
     public void setIntHarvestCost(int intHarvestCost) {this.intHarvestCost = intHarvestCost;}
 
-    public int getIntProduceProduced() {return intProduceProduced;}
-    public void setIntProduceProduced(int intProduceProduced) {this.intProduceProduced = intProduceProduced;}
+    public int getIntMinProductsProduced() {return intMinProductsProduced;}
+    public void setIntMinProductsProduced(int intMinProductsProduced) {this.intMinProductsProduced = intMinProductsProduced;}
+
+    public int getIntMaxProductsProduced() {return intMaxProductsProduced;}
+    public void setIntMaxProductsProduced(int intMaxProductsProduced) {this.intMaxProductsProduced = intMaxProductsProduced;}
 
     public int getIntSeedCost() {return intSeedCost;}
     public void setIntSeedCost(int intSeedCost) {this.intSeedCost = intSeedCost;}
