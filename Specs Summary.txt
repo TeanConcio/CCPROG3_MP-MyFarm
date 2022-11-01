@@ -2,10 +2,12 @@ Title: MyFarm
 
 
 Questions:
+	- Advancing and progression via days or minutes
 	- Fertilizer either happening before or after planting
 	- Plow or Shovel removing withered plants
 		~ Plow paying either 10% or 2 OC to remove
 	- Withered crop stays indefinitely or x2 Harvesting time
+	- Harvest Exp Gain
 
 
 
@@ -34,9 +36,8 @@ III. End Conditions
 	- Can go on until forever until:
 	
 	A. 
-		1. No seeds
-		2. No growing or active crops
-		3. No money for seeds
+		1. No growing or active crops
+		2. No money for seeds
 		
 	B. 
 		1. Farm only contains withered crops
@@ -105,9 +106,7 @@ VII. Withered Crops
 	B. Using Shovel Outside of Intended Purpose
 		- All actions require 7 Objectcoins
 		1. Using Shovel to a unplowed tile does nothing
-		2. Using Shovel on a plowed tile will make it unplowed
-		3. Using Shovel on a crop tile will remove the plant and make the tile unplowed
-		4. Using Shovel on a watered and/or fertilized tile will remove its status
+		2. Using Shovel on a crop tile will remove the plant and make the tile unplowed
 
 
 
@@ -245,7 +244,7 @@ XI. Seeds
 			  fb  : fertilizer bonus
 					fb = fertilizers used * 0.50 * bp
 			  cb  : crop bonus (Only for flowers)
-					cb = 0.05 * bp * wb * fb
+					cb = 0.05 * (bp + wb + fb)
 	
 	D. Harvesting
 		- If water and fertilizer needs are not met at the time of harvesting they will not produce a produce and will wither
