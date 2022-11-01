@@ -137,10 +137,13 @@ public class Tool {
 
         // If Tile is Plowed AND Player has Fertilizers
         if (objTile.getIntStatus() == Tile.PLOWED &&
-                objPlayer.getIntFertilizerNum() > 0) {
+                objPlayer.getIntFertilizerCount() > 0) {
 
             // Increase Fertilize Count
             objTile.setIntFertilizedNum(objTile.getIntFertilizedNum() + 1);
+
+            // Decrement Farmer's Fertilizer Count
+            // objPlayer.setIntFertilizerCount(objPlayer.getIntFertilizerCount() - 1);
 
             return true;
         }
