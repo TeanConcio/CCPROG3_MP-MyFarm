@@ -227,6 +227,6 @@ public class Tool {
     public int getIntUseCost() {return intUseCost;}
     public void setIntUseCost(int intUseCost) {this.intUseCost = intUseCost;}
 
-    public int getFltEXPGain() {return fltEXPGain;}
-    public void setFltEXPGain(int fltEXPGain) {this.fltEXPGain = fltEXPGain;}
+    public float getFltEXPGain() {return fltEXPGain;}
+    public void setFltEXPGain(float fltEXPGain) {this.fltEXPGain = fltEXPGain;}
 }

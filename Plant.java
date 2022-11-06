@@ -17,7 +17,7 @@ public class Plant {
     private int intMaxProductsProduced;
     private int intSeedCost;
     private int intBaseProducePrice;
-    private int intHarvestEXP;
+    private float fltHarvestEXP;
 
 
 
@@ -40,7 +40,7 @@ public class Plant {
      * @param intMaxProductsProduced Maximum amount of products produced in harvest.
      * @param intSeedCost Cost of the seed.
      * @param intBaseProducePrice Base price per product produced.
-     * @param intHarvestEXP EXP gained from harvesting the crop.
+     * @param fltHarvestEXP EXP gained from harvesting the crop.
      */
     public Plant (String strSeedName,
                   int intCropType,
@@ -53,7 +53,7 @@ public class Plant {
                   int intMaxProductsProduced,
                   int intSeedCost,
                   int intBaseProducePrice,
-                  int intHarvestEXP) {
+                  int fltHarvestEXP) {
 
         this.strSeedName = strSeedName;
         this.intCropType = intCropType;
@@ -66,7 +66,7 @@ public class Plant {
         this.intMaxProductsProduced = intMaxProductsProduced;
         this.intSeedCost = intSeedCost;
         this.intBaseProducePrice = intBaseProducePrice;
-        this.intHarvestEXP = intHarvestEXP;
+        this.fltHarvestEXP = fltHarvestEXP;
     }
 
 
@@ -177,6 +177,6 @@ public class Plant {
     public int getIntBaseProducePrice() {return intBaseProducePrice;}
     public void setIntBaseProducePrice(int intBaseProducePrice) {this.intBaseProducePrice = intBaseProducePrice;}
 
-    public int getIntHarvestEXP() {return intHarvestEXP;}
-    public void setIntHarvestEXP(int intHarvestEXP) {this.intHarvestEXP = intHarvestEXP;}
+    public float getFltHarvestEXP() {return fltHarvestEXP;}
+    public void setFltHarvestEXP(float fltHarvestEXP) {this.fltHarvestEXP = fltHarvestEXP;}
 }

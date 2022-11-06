@@ -165,6 +165,11 @@ public class Tile {
         // If Plant is a Tree
         if (objSeed.getIntCropType() == Plant.TREE) {
 
+            // If Tile is at the Edge of the Board
+            if (intRowCoord == 0 || intRowCoord == objBoard.ROWS - 1 ||
+                    intColCoord == 0 || intColCoord == objBoard.COLUMNS - 1)
+                return false;
+
             // For each Tile in a 3x3 Square
             for (int i = intRowCoord-1; i <= intRowCoord+1; i++) {
 
