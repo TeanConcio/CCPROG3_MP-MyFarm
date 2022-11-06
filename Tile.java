@@ -30,7 +30,7 @@ public class Tile {
     /**
      * Tile Constructor
      * - This constructor creates a Tile object.
-     * 
+     *
      * @param intRowCoord Row coordinate of the Tile.
      * @param intColCoord Column coordinate of the Tile.
      * @param intStatus Status of the Tile.
@@ -59,7 +59,7 @@ public class Tile {
     /**
      * resetTile
      * - Resets the Tile to the specified status.
-     * 
+     *
      * @param intStatus Status to reset the Tile to.
      */
     public void resetTile (int intStatus) {
@@ -106,25 +106,25 @@ public class Tile {
             // Else Plant's Conditions are not Met
             else {
 
-                // Set Tile Status to Withered
-                intStatus = WITHERED;
+                // Reset and Set Tile Status to Withered
+                resetTile(WITHERED);
             }
         }
 
         // If Plant is pass its Harvest Day
         else if (intPlantAge == objPlant.getIntHarvestTime() + 1) {
 
-            // Set Tile Status to Withered
-            intStatus = WITHERED;
+            // Reset and Set Tile Status to Withered
+            resetTile(WITHERED);
         }
     }
 
-        
-    
+
+
     /**
      * plantSeed
      * - Sets the Tile's Plant.
-     * 
+     *
      * @param objSeed Plant to set the Tile's Plant to.
      * @param objPlayer Player who is planting the Seed.
      * @param objBoard Board the Tile is on.
@@ -136,7 +136,7 @@ public class Tile {
                               Board objBoard) {
 
         // Switch Objectcoin Cost with Bonuses
-        float fltNewSeedCost = objSeed.getFltSeedCost() - objPlayer.objFarmerTitle.getFltSeedDiscount();
+        float fltNewSeedCost = objSeed.getFltSeedCost() - objPlayer.getObjCurrentTitle().getFltSeedDiscount();
 
         // If Player has not enough Objectcions to plant Seed
         if (objPlayer.getFltObjectCoins() < fltNewSeedCost)
@@ -145,14 +145,13 @@ public class Tile {
         // If Tile is Not Plowed
         if (intStatus != PLOWED)
             return false;
-
-        /*
+        
         // If Plant is a Tree
         if (objSeed.getIntCropType() == Plant.TREE) {
 
             // If Tile is at the Edge of the Board
-            if (intRowCoord == 0 || intRowCoord == objBoard.ROWS - 1 ||
-                    intColCoord == 0 || intColCoord == objBoard.COLUMNS - 1)
+            if (intRowCoord == 0 || intRowCoord == objBoard.ROW - 1 ||
+                    intColCoord == 0 || intColCoord == objBoard.COLUMN - 1)
                 return false;
 
             // For each Tile in a 3x3 Square
@@ -166,7 +165,7 @@ public class Tile {
                         return false;
                 }
             }
-        }*/
+        }
 
         // Set Tile Status to Occupied
         intStatus = Tile.OCCUPIED;

@@ -6,6 +6,7 @@ public class Plant {
     public final static int FLOWER = 1;
     public final static int TREE = 2;
 
+
     private String strSeedName;
     private int intCropType;
     private int intHarvestTime;
@@ -15,9 +16,11 @@ public class Plant {
     private int intFertilizerLimit;
     private int intMinProductsProduced;
     private int intMaxProductsProduced;
-    private float fltSeedCost;
-    private int intBaseProducePrice;
+    private float fltBaseSeedCost;
+    private float fltBaseProducePrice;
     private float fltHarvestEXP;
+
+    private float fltDiscountdSeedCost;
 
 
 
@@ -38,8 +41,8 @@ public class Plant {
      * @param intFertilizerLimit Limit of the crop's Fertilizer Bonus.
      * @param intMinProductsProduced Minimum amount of products produced in harvest.
      * @param intMaxProductsProduced Maximum amount of products produced in harvest.
-     * @param fltSeedCost Cost of the seed.
-     * @param intBaseProducePrice Base price per product produced.
+     * @param fltBaseSeedCost Cost of the seed.
+     * @param fltBaseProducePrice Base price per product produced.
      * @param fltHarvestEXP EXP gained from harvesting the crop.
      */
     public Plant (String strSeedName,
@@ -51,8 +54,8 @@ public class Plant {
                   int intFertilizerLimit,
                   int intMinProductsProduced,
                   int intMaxProductsProduced,
-                  float fltSeedCost,
-                  int intBaseProducePrice,
+                  float fltBaseSeedCost,
+                  float fltBaseProducePrice,
                   float fltHarvestEXP) {
 
         this.strSeedName = strSeedName;
@@ -64,9 +67,11 @@ public class Plant {
         this.intFertilizerLimit = intFertilizerLimit;
         this.intMinProductsProduced = intMinProductsProduced;
         this.intMaxProductsProduced = intMaxProductsProduced;
-        this.fltSeedCost = fltSeedCost;
-        this.intBaseProducePrice = intBaseProducePrice;
+        this.fltBaseSeedCost = fltBaseSeedCost;
+        this.fltBaseProducePrice = fltBaseProducePrice;
         this.fltHarvestEXP = fltHarvestEXP;
+
+        this.fltDiscountdSeedCost = fltBaseSeedCost;
     }
 
 
@@ -88,6 +93,12 @@ public class Plant {
     public int generateProductsProduced () {
         return (int) (Math.random() * (this.intMaxProductsProduced -
                 this.intMinProductsProduced + 1) + this.intMinProductsProduced);
+    }
+    
+    
+    
+    public void updateDiscountedSeedCost (float fltDiscount) {
+        this.fltDiscountdSeedCost = this.fltBaseSeedCost - fltDiscount;
     }
 
 
@@ -172,12 +183,15 @@ public class Plant {
     public int getIntMaxProductsProduced() {return intMaxProductsProduced;}
     public void setIntMaxProductsProduced(int intMaxProductsProduced) {this.intMaxProductsProduced = intMaxProductsProduced;}
 
-    public float getFltSeedCost() {return fltSeedCost;}
-    public void setFltSeedCost(float fltSeedCost) {this.fltSeedCost = fltSeedCost;}
+    public float getFltBaseSeedCost() {return fltBaseSeedCost;}
+    public void setFltBaseSeedCost(float fltBaseSeedCost) {this.fltBaseSeedCost = fltBaseSeedCost;}
 
-    public int getIntBaseProducePrice() {return intBaseProducePrice;}
-    public void setIntBaseProducePrice(int intBaseProducePrice) {this.intBaseProducePrice = intBaseProducePrice;}
+    public float getFltBaseProducePrice() {return fltBaseProducePrice;}
+    public void setFltBaseProducePrice(int fltBaseProducePrice) {this.intBaseProducePrice = intBaseProducePrice;}
 
     public float getFltHarvestEXP() {return fltHarvestEXP;}
     public void setFltHarvestEXP(float fltHarvestEXP) {this.fltHarvestEXP = fltHarvestEXP;}
+
+    public float getFltDiscountdSeedCost() {return fltDiscountdSeedCost;}
+    public void setFltDiscountdSeedCost(float fltDiscountdSeedCost) {this.fltDiscountdSeedCost = fltDiscountdSeedCost;}
 }
