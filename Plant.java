@@ -53,7 +53,7 @@ public class Plant {
                   int intMaxProductsProduced,
                   int intSeedCost,
                   int intBaseProducePrice,
-                  int fltHarvestEXP) {
+                  float fltHarvestEXP) {
 
         this.strSeedName = strSeedName;
         this.intCropType = intCropType;
@@ -78,6 +78,13 @@ public class Plant {
 
 
     /* ----- ----- ----- Plant Methods ----- ----- ----- */
+
+    public int generateProductsProduced () {
+        return (int) (Math.random() * (this.intMaxProductsProduced -
+                this.intMinProductsProduced + 1) + this.intMinProductsProduced);
+    }
+
+
 
     /**
      * computeProducePrice

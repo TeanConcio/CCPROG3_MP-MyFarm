@@ -106,7 +106,7 @@ public class Tool {
                 objTile.isBoolWateredToday() == false) {
 
             // Water Tile
-            objTile.setIntWateredNum(objTile.getIntWateredNum() + 1);
+            objTile.setIntTimesWatered(objTile.getIntTimesWatered() + 1);
             objTile.setBoolWateredToday(true);
 
             return true;
@@ -206,7 +206,7 @@ public class Tool {
                 objTile.isBoolFertilizedToday() == false) {
 
             // Increase Tile Fertilize Count
-            objTile.setIntFertilizedNum(objTile.getIntFertilizedNum() + 1);
+            objTile.setIntTimesFertilized(objTile.getIntTimesFertilized() + 1);
             objTile.setBoolFertilizedToday(true);
 
             return true;

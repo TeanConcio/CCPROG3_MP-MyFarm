@@ -14,9 +14,9 @@ public class Tile {
     private int intRowCoord;
     private int intColCoord;
     private int intStatus;
-    private int intWateredNum;
+    private int intTimesWatered;
     private boolean boolWateredToday;
-    private int intFertilizedNum;
+    private int intTimesFertilized;
     private boolean boolFertilizedToday;
     private Plant objPlant;
     private int intPlantAge;
@@ -42,9 +42,9 @@ public class Tile {
         this.intRowCoord = intRowCoord;
         this.intColCoord = intColCoord;
         this.intStatus = intStatus;
-        this.intWateredNum = 0;
+        this.intTimesWatered = 0;
         this.boolWateredToday = false;
-        this.intFertilizedNum = 0;
+        this.intTimesFertilized = 0;
         this.boolFertilizedToday = false;
         this.objPlant = null;
         this.intPlantAge = 0;
@@ -65,9 +65,9 @@ public class Tile {
     public void resetTile (int intStatus) {
 
         this.intStatus = intStatus;
-        this.intWateredNum = 0;
+        this.intTimesWatered = 0;
         this.boolWateredToday = false;
-        this.intFertilizedNum = 0;
+        this.intTimesFertilized = 0;
         this.boolFertilizedToday = false;
         this.objPlant = null;
         this.intPlantAge = 0;
@@ -96,8 +96,8 @@ public class Tile {
         if (intPlantAge == objPlant.getIntHarvestTime()) {
 
             // If Plant's Conditions are Met
-            if (intWateredNum >= objPlant.getIntWaterReq() &&
-                    intFertilizedNum >= objPlant.getIntFertilizerReq()) {
+            if (intTimesWatered >= objPlant.getIntWaterReq() &&
+                    intTimesFertilized >= objPlant.getIntFertilizerReq()) {
 
                 // Set Tile Status to Harvestable
                 intStatus = HARVESTABLE;
@@ -210,14 +210,14 @@ public class Tile {
     public int getIntStatus() {return intStatus;}
     public void setIntStatus(int intStatus) {this.intStatus = intStatus;}
 
-    public int getIntWateredNum() {return intWateredNum;}
-    public void setIntWateredNum(int intWateredNum) {this.intWateredNum = intWateredNum;}
+    public int getIntTimesWatered() {return intTimesWatered;}
+    public void setIntTimesWatered(int intTimesWatered) {this.intTimesWatered = intTimesWatered;}
 
     public boolean isBoolWateredToday() {return boolWateredToday;}
     public void setBoolWateredToday(boolean boolWateredToday) {this.boolWateredToday = boolWateredToday;}
 
-    public int getIntFertilizedNum() {return intFertilizedNum;}
-    public void setIntFertilizedNum(int intFertilizedNum) {this.intFertilizedNum = intFertilizedNum;}
+    public int getIntTimesFertilized() {return intTimesFertilized;}
+    public void setIntTimesFertilized(int intTimesFertilized) {this.intTimesFertilized = intTimesFertilized;}
 
     public boolean isBoolFertilizedToday() {return boolFertilizedToday;}
     public void setBoolFertilizedToday(boolean boolFertilizedToday) {this.boolFertilizedToday = boolFertilizedToday;}
