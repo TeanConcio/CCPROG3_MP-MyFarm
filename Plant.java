@@ -15,7 +15,7 @@ public class Plant {
     private int intFertilizerLimit;
     private int intMinProductsProduced;
     private int intMaxProductsProduced;
-    private int intSeedCost;
+    private float fltSeedCost;
     private int intBaseProducePrice;
     private float fltHarvestEXP;
 
@@ -38,7 +38,7 @@ public class Plant {
      * @param intFertilizerLimit Limit of the crop's Fertilizer Bonus.
      * @param intMinProductsProduced Minimum amount of products produced in harvest.
      * @param intMaxProductsProduced Maximum amount of products produced in harvest.
-     * @param intSeedCost Cost of the seed.
+     * @param fltSeedCost Cost of the seed.
      * @param intBaseProducePrice Base price per product produced.
      * @param fltHarvestEXP EXP gained from harvesting the crop.
      */
@@ -51,7 +51,7 @@ public class Plant {
                   int intFertilizerLimit,
                   int intMinProductsProduced,
                   int intMaxProductsProduced,
-                  int intSeedCost,
+                  float fltSeedCost,
                   int intBaseProducePrice,
                   float fltHarvestEXP) {
 
@@ -64,7 +64,7 @@ public class Plant {
         this.intFertilizerLimit = intFertilizerLimit;
         this.intMinProductsProduced = intMinProductsProduced;
         this.intMaxProductsProduced = intMaxProductsProduced;
-        this.intSeedCost = intSeedCost;
+        this.fltSeedCost = fltSeedCost;
         this.intBaseProducePrice = intBaseProducePrice;
         this.fltHarvestEXP = fltHarvestEXP;
     }
@@ -79,6 +79,12 @@ public class Plant {
 
     /* ----- ----- ----- Plant Methods ----- ----- ----- */
 
+    /**
+     * generateRandomProductsProduced
+     * - This method generates a random number of products produced in harvest.
+     *
+     * @return Number of products produced in harvest.
+     */
     public int generateProductsProduced () {
         return (int) (Math.random() * (this.intMaxProductsProduced -
                 this.intMinProductsProduced + 1) + this.intMinProductsProduced);
@@ -91,58 +97,46 @@ public class Plant {
      * - Computes the price of the produce based on the base price and the number of products produced.
      *
      * @param intProductsProduced Number of products produced.
-     * @param strFarmerTitle Title of the farmer.
+     * @param objTitle Title of the farmer.
      * @param intTimesWatered Number of times the plant was watered.
      * @param intTimesFertilized Number of times the plant was fertilized.
      *
      * @return The price of the produce.
      */
-    public int computeProducePrice (int intProductsProduced,
-                                    String strFarmerTitle,
-                                    int intTimesWatered,
-                                    int intTimesFertilized) {
+    public float computeProducePrice (int intProductsProduced,
+                                      FarmerTitle objTitle,
+                                      int intTimesWatered,
+                                      int intTimesFertilized) {
 
-        int intHarvestTotal;
+        float fltHarvestTotal;
+        int intNewWaterLimit;
+        int intNewFertilizerLimit;
         float fltWaterBonus;
         float fltFertilizerBonus;
 
         // Get Title Bonus
-        switch (strFarmerTitle) {
-
-            case "Registered Farmer":
-                intHarvestTotal = intProductsProduced * (intBaseProducePrice + 1);
-                break;
-
-            case "Distinguished Farmer":
-                intHarvestTotal = intProductsProduced * (intBaseProducePrice + 2);
-                break;
-
-            case "Legendary Farmer":
-                intHarvestTotal = intProductsProduced * (intBaseProducePrice + 4);
-                break;
-
-            default:
-                intHarvestTotal = intProductsProduced * intBaseProducePrice;
-                break;
-        }
+        fltHarvestTotal = intProductsProduced * (intBaseProducePrice +
+                objTitle.getFltEarningBonus());
 
         // Calculate Water Bonus
-        if (intTimesWatered > intWaterLimit)
-            fltWaterBonus = intHarvestTotal * 0.2f * (intWaterLimit - 1);
+        intNewWaterLimit = this.intWaterLimit + objTitle.getIntWaterLimInc();
+        if (intTimesWatered > intNewWaterLimit)
+            fltWaterBonus = fltHarvestTotal * 0.2f * (intNewWaterLimit - 1);
         else
-            fltWaterBonus = intHarvestTotal * 0.2f * (intTimesWatered - 1);
+            fltWaterBonus = fltHarvestTotal * 0.2f * (intTimesWatered - 1);
 
         // Calculate Fertilizer Bonus
+        intNewFertilizerLimit = this.intFertilizerLimit + objTitle.getIntFertLimInc();
         if (intTimesFertilized > intFertilizerLimit)
-            fltFertilizerBonus = intHarvestTotal * 0.5f * (intFertilizerLimit - 1);
+            fltFertilizerBonus = fltHarvestTotal * 0.5f * (intNewFertilizerLimit - 1);
         else
-            fltFertilizerBonus = intHarvestTotal * 0.5f * (intTimesFertilized - 1);
+            fltFertilizerBonus = fltHarvestTotal * 0.5f * (intTimesFertilized - 1);
 
         // Get Crop Bonus for Flowers
         if (intCropType == Plant.FLOWER)
-            return (int) ((intHarvestTotal + fltWaterBonus + fltFertilizerBonus) * 1.1);
+            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus) * 1.1f;
         else
-            return (int) (intHarvestTotal + fltWaterBonus + fltFertilizerBonus);
+            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus);
     }
 
 
@@ -178,8 +172,8 @@ public class Plant {
     public int getIntMaxProductsProduced() {return intMaxProductsProduced;}
     public void setIntMaxProductsProduced(int intMaxProductsProduced) {this.intMaxProductsProduced = intMaxProductsProduced;}
 
-    public int getIntSeedCost() {return intSeedCost;}
-    public void setIntSeedCost(int intSeedCost) {this.intSeedCost = intSeedCost;}
+    public float getFltSeedCost() {return fltSeedCost;}
+    public void setFltSeedCost(float fltSeedCost) {this.fltSeedCost = fltSeedCost;}
 
     public int getIntBaseProducePrice() {return intBaseProducePrice;}
     public void setIntBaseProducePrice(int intBaseProducePrice) {this.intBaseProducePrice = intBaseProducePrice;}

@@ -3,7 +3,7 @@ public class Tool {
     /* ----- ----- ----- Tool Attributes ----- ----- ----- */
 
     private String strToolName;
-    private int intUseCost;
+    private float fltUseCost;
     private float fltEXPGain;
 
 
@@ -17,15 +17,15 @@ public class Tool {
      * - Creates a new Tool object.
      * 
      * @param strToolName Name of the Tool.
-     * @param intUseCost Cost to use the Tool.
+     * @param fltUseCost Cost to use the Tool.
      * @param fltEXPGain EXP gained from using the Tool.
      */
     public Tool (String strToolName,
-                 int intUseCost,
+                 float fltUseCost,
                  float fltEXPGain) {
 
         this.strToolName = strToolName;
-        this.intUseCost = intUseCost;
+        this.fltUseCost = fltUseCost;
         this.fltEXPGain = fltEXPGain;
     }
 
@@ -50,7 +50,7 @@ public class Tool {
         boolean boolToolUsed = false;
 
         // If Player has not enough Objectcions to use Tool
-        if (objPlayer.getIntObjectCoins() < intUseCost)
+        if (objPlayer.getFltObjectCoins() < this.fltUseCost)
             return false;
 
         // Switch Tool Method
@@ -81,10 +81,10 @@ public class Tool {
         if (boolToolUsed) {
 
             // Use Objectcoins
-            objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intUseCost);
+            objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - this.fltUseCost);
 
             // Gain EXP
-            objPlayer.setFltEXP(objPlayer.getFltEXP() + fltEXPGain);
+            objPlayer.setFltEXP(objPlayer.getFltEXP() + this.fltEXPGain);
         }
 
         return boolToolUsed;
@@ -224,8 +224,8 @@ public class Tool {
     public String getStrToolName() {return strToolName;}
     public void setStrToolName(String strToolName) {this.strToolName = strToolName;}
 
-    public int getIntUseCost() {return intUseCost;}
-    public void setIntUseCost(int intUseCost) {this.intUseCost = intUseCost;}
+    public float getFltUseCost() {return fltUseCost;}
+    public void setFltUseCost(float fltUseCost) {this.fltUseCost = fltUseCost;}
 
     public float getFltEXPGain() {return fltEXPGain;}
     public void setFltEXPGain(float fltEXPGain) {this.fltEXPGain = fltEXPGain;}

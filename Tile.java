@@ -131,37 +131,22 @@ public class Tile {
      *
      * @return True if Plant was set, False otherwise.
      */
-    public boolean plantSeed (Plant objSeed, Farmer objPlayer, Board objBoard) {
+    public boolean plantSeed (Plant objSeed,
+                              Farmer objPlayer,
+                              Board objBoard) {
 
         // Switch Objectcoin Cost with Bonuses
-        int intNewSeedCost;
-        switch (objPlayer.getStrTitle) {
-
-            case "Registered Farmer":
-                intNewSeedCost = objSeed.getIntSeedCost() - 1;
-                break;
-
-            case "Distinguished Farmer":
-                intNewSeedCost = objSeed.getIntSeedCost() - 2;
-                break;
-
-            case "Legendary Farmer":
-                intNewSeedCost = objSeed.getIntSeedCost() - 3;
-                break;
-
-            default:
-                intNewSeedCost = objSeed.getIntSeedCost();
-                break;
-        }
+        float fltNewSeedCost = objSeed.getFltSeedCost() - objPlayer.objFarmerTitle.getFltSeedDiscount();
 
         // If Player has not enough Objectcions to plant Seed
-        if (objPlayer.getIntObjectCoins() < intNewSeedCost)
+        if (objPlayer.getFltObjectCoins() < fltNewSeedCost)
             return false;
 
         // If Tile is Not Plowed
         if (intStatus != PLOWED)
             return false;
 
+        /*
         // If Plant is a Tree
         if (objSeed.getIntCropType() == Plant.TREE) {
 
@@ -181,7 +166,7 @@ public class Tile {
                         return false;
                 }
             }
-        }
+        }*/
 
         // Set Tile Status to Occupied
         intStatus = Tile.OCCUPIED;
@@ -190,7 +175,7 @@ public class Tile {
         objPlant = objSeed;
 
         // Use Objectcoins
-        objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intNewSeedCost);
+        objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - fltNewSeedCost);
 
         return true;
     }
