@@ -4,7 +4,7 @@ public class Tool {
 
     private String strToolName;
     private int intUseCost;
-    private int intEXPGain;
+    private float fltEXPGain;
 
 
 
@@ -12,11 +12,21 @@ public class Tool {
 
     /* ----- ----- ----- Tool Constructor ----- ----- ----- */
 
-    public Tool (String strToolName, int intUseCost, int intEXPGain) {
+    /**
+     * Tool Constructor
+     * - Creates a new Tool object.
+     * 
+     * @param strToolName Name of the Tool.
+     * @param intUseCost Cost to use the Tool.
+     * @param fltEXPGain EXP gained from using the Tool.
+     */
+    public Tool (String strToolName,
+                 int intUseCost,
+                 float fltEXPGain) {
 
         this.strToolName = strToolName;
         this.intUseCost = intUseCost;
-        this.intEXPGain = intEXPGain;
+        this.fltEXPGain = fltEXPGain;
     }
 
 
@@ -25,32 +35,71 @@ public class Tool {
 
     /* ----- ----- ----- Tool Methods ----- ----- ----- */
 
-    public boolean useTool (Tile objTile,  Farmer objPlayer) {
+    /**
+     * useTool
+     * - This method is called when Player uses a tool.
+     * 
+     * @param objTile Tile to use the tool on.
+     * @param objPlayer Player using the tool.
+     *
+     * @return True if the Tool was used, False otherwise.
+     */
+    public boolean useTool (Tile objTile,
+                            Farmer objPlayer) {
 
+        boolean boolToolUsed = false;
+
+        // If Player has not enough Objectcions to use Tool
+        if (objPlayer.getIntObjectCoins() < intUseCost)
+            return false;
+
+        // Switch Tool Method
         switch (strToolName) {
 
             case "Watering Can":
-                return useWateringCan(objTile, objPlayer);
+                boolToolUsed = useWateringCan(objTile);
+                break;
 
             case "Plow":
-                return usePlow(objTile, objPlayer);
+                boolToolUsed = usePlow(objTile);
+                break;
 
             case "Shovel":
-                return useShovel(objTile, objPlayer);
+                boolToolUsed = useShovel(objTile);
+                break;
 
             case "Pickaxe":
-                return usePickaxe(objTile, objPlayer);
+                boolToolUsed = usePickaxe(objTile);
+                break;
 
             case "Fertilizer":
-                return useFertilizer(objTile, objPlayer);
+                boolToolUsed = useFertilizer(objTile);
+                break;
         }
 
-        return false;
+        // If Tool was successfully used
+        if (boolToolUsed) {
+
+            // Use Objectcoins
+            objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intUseCost);
+
+            // Gain EXP
+            objPlayer.setFltEXP(objPlayer.getFltEXP() + fltEXPGain);
+        }
+
+        return boolToolUsed;
     }
 
 
-
-    private boolean useWateringCan (Tile objTile, Farmer objPlayer) {
+    /**
+     * useWateringCan
+     * - This method is called when Player uses a Watering Can.
+     * 
+     * @param objTile Tile to use the Watering Can on.
+     *                
+     * @return True if the Watering Can was used, False otherwise.
+     */
+    private boolean useWateringCan (Tile objTile) {
 
         // If tile has a Plant and hasn't been watered today
         if (objTile.getIntStatus() == Tile.OCCUPIED &&
@@ -60,9 +109,6 @@ public class Tool {
             objTile.setIntWateredNum(objTile.getIntWateredNum() + 1);
             objTile.setBoolWateredToday(true);
 
-            // Gain EXP
-            // objPlayer.setIntEXP(objPlayer.getIntEXP() + intEXPGain);
-
             return true;
         }
 
@@ -71,16 +117,22 @@ public class Tool {
 
 
 
-    private boolean usePlow (Tile objTile, Farmer objPlayer) {
+    /**
+     * usePlow
+     * - This method is called when Player uses a Plow.
+     * 
+     * @param objTile Tile to use the Plow on.
+     *                
+     * @return True if the Plow was used, False otherwise.
+     */
+    private boolean usePlow (Tile objTile) {
 
+        // If Tile is Unplowed
         if (objTile.getIntStatus() == Tile.UNPLOWED) {
 
             // Plow Tile
             objTile.setIntStatus(Tile.PLOWED);
 
-            // Gain EXP
-            // objPlayer.setIntEXP(objPlayer.getIntEXP() + intEXPGain);
-
             return true;
         }
 
@@ -89,29 +141,41 @@ public class Tool {
 
 
 
-    private boolean useShovel (Tile objTile, Farmer objPlayer) {
+    /**
+     * useShovel
+     * - This method is called when Player uses a Shovel.
+     * 
+     * @param objTile Tile to use the Shovel on.
+     *                
+     * @return True if the Shovel was used, False otherwise.
+     */
+    private boolean useShovel (Tile objTile) {
 
-        // If Player has enough Objectcoins
-        if (objPlayer.getIntObjectCoins() >= intUseCost) {
+        // If Tile is Plowed, Occupied, Harvestable, or is Withered
+        if (objTile.getIntStatus() == Tile.UNPLOWED ||
+                objTile.getIntStatus() == Tile.OCCUPIED ||
+                objTile.getIntStatus() == Tile.HARVESTABLE ||
+                objTile.getIntStatus() == Tile.WITHERED) {
 
             // Reset Tile
-            objTile = new Tile(Tile.UNPLOWED);
-
-            // Use Objectcoins
-            // objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intUseCost);
-
-            // Gain EXP
-            // objPlayer.setIntEXP(objPlayer.getIntEXP() + intEXPGain);
-
-            return true;
+            objTile.resetTile(Tile.UNPLOWED);
         }
 
-        return false;
+        // Always true even if nothing happens
+        return true;
     }
 
 
 
-    private boolean usePickaxe (Tile objTile, Farmer objPlayer) {
+    /**
+     * usePickaxe
+     * - This method is called when Player uses a Pickaxe.
+     * 
+     * @param objTile Tile to use the Pickaxe on.
+     *                
+     * @return True if the Pickaxe was used, False otherwise.
+     */
+    private boolean usePickaxe (Tile objTile) {
 
         // If Tile has a Rock
         if (objTile.getIntStatus() == Tile.ROCK) {
@@ -119,12 +183,6 @@ public class Tool {
             // Set Tile to Unplowed
             objTile.setIntStatus(Tile.UNPLOWED);
 
-            // Use Objectcoins
-            // objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intUseCost);
-
-            // Gain EXP
-            // objPlayer.setIntEXP(objPlayer.getIntEXP() + intEXPGain);
-
             return true;
         }
 
@@ -133,17 +191,23 @@ public class Tool {
 
 
 
-    private boolean useFertilizer (Tile objTile, Farmer objPlayer) {
+    /**
+     * useFertilizer
+     * - This method is called when Player uses a Fertilizer.
+     * 
+     * @param objTile Tile to use the Fertilizer on.
+     *                
+     * @return True if the Fertilizer was used, False otherwise.
+     */
+    private boolean useFertilizer (Tile objTile) {
 
         // If Tile is Plowed AND Player has Fertilizers
-        if (objTile.getIntStatus() == Tile.PLOWED &&
-                objPlayer.getIntFertilizerCount() > 0) {
+        if (objTile.getIntStatus() == Tile.OCCUPIED &&
+                objTile.isBoolFertilizedToday() == false) {
 
-            // Increase Fertilize Count
+            // Increase Tile Fertilize Count
             objTile.setIntFertilizedNum(objTile.getIntFertilizedNum() + 1);
-
-            // Decrement Farmer's Fertilizer Count
-            // objPlayer.setIntFertilizerCount(objPlayer.getIntFertilizerCount() - 1);
+            objTile.setBoolFertilizedToday(true);
 
             return true;
         }
@@ -163,6 +227,6 @@ public class Tool {
     public int getIntUseCost() {return intUseCost;}
     public void setIntUseCost(int intUseCost) {this.intUseCost = intUseCost;}
 
-    public int getIntEXPGain() {return intEXPGain;}
-    public void setIntEXPGain(int intEXPGain) {this.intEXPGain = intEXPGain;}
+    public int getFltEXPGain() {return fltEXPGain;}
+    public void setFltEXPGain(int fltEXPGain) {this.fltEXPGain = fltEXPGain;}
 }

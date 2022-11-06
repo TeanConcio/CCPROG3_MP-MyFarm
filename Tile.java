@@ -3,7 +3,7 @@ public class Tile {
     /* ----- ----- ----- Tile Attributes ----- ----- ----- */
 
     // Constants
-    public static final int ROCK = 0 ;
+    public static final int ROCK = 0;
     public static final int UNPLOWED = 1;
     public static final int PLOWED = 2;
     public static final int OCCUPIED = 3;
@@ -11,10 +11,13 @@ public class Tile {
     public static final int WITHERED = 5;
 
     // Attributes
+    private int intRowCoord;
+    private int intColCoord;
     private int intStatus;
-    private int intFertilizedNum;
     private int intWateredNum;
     private boolean boolWateredToday;
+    private int intFertilizedNum;
+    private boolean boolFertilizedToday;
     private Plant objPlant;
     private int intPlantAge;
 
@@ -23,11 +26,26 @@ public class Tile {
 
 
     /* ----- ----- ----- Tile Constructor ----- ----- ----- */
-    public Tile (int intStatus) {
+
+    /**
+     * Tile Constructor
+     * - This constructor creates a Tile object.
+     * 
+     * @param intRowCoord Row coordinate of the Tile.
+     * @param intColCoord Column coordinate of the Tile.
+     * @param intStatus Status of the Tile.
+     */
+    public Tile (int intRowCoord,
+                 int intColCoord,
+                 int intStatus) {
+
+        this.intRowCoord = intRowCoord;
+        this.intColCoord = intColCoord;
         this.intStatus = intStatus;
-        this.intFertilizedNum = 0;
         this.intWateredNum = 0;
         this.boolWateredToday = false;
+        this.intFertilizedNum = 0;
+        this.boolFertilizedToday = false;
         this.objPlant = null;
         this.intPlantAge = 0;
     }
@@ -38,55 +56,138 @@ public class Tile {
 
     /* ----- ----- ----- Tile Methods ----- ----- ----- */
 
-    public void update (String strFarmerTitle) {
+    /**
+     * resetTile
+     * - Resets the Tile to the specified status.
+     * 
+     * @param intStatus Status to reset the Tile to.
+     */
+    public void resetTile (int intStatus) {
 
-        // Reset Watered Today
+        this.intStatus = intStatus;
+        this.intWateredNum = 0;
+        this.boolWateredToday = false;
+        this.intFertilizedNum = 0;
+        this.boolFertilizedToday = false;
+        this.objPlant = null;
+        this.intPlantAge = 0;
+    }
+
+
+
+    /**
+     * updateTile
+     * - Updates the Tile's Plant related statuses for advancing days.
+     */
+    public void updateTile () {
+
+        // Reset Watered and Fertilized Today
         boolWateredToday = false;
+        boolFertilizedToday = false;
 
-        // If Tile is Occupied by a Plant
-        if (intStatus == OCCUPIED) {
+        // If Tile has no Plant
+        if (objPlant == null)
+            return;
 
-            // Increment Plant Age
-            intPlantAge++;
-        }
-
-
-        // Get Crop Harvest Time with Farmer Title Bonus
-        int intHarvestTime;
-        switch (strFarmerTitle) {
-
-            case "Registered Farmer":
-                intHarvestTime = (int)(objPlant.getIntHarvestTime() * 0.95);
-                break;
-
-            case "Distinguished Farmer":
-                intHarvestTime = (int)(objPlant.getIntHarvestTime() * 0.90);
-                break;
-
-            case "Honorable Farmer":
-                intHarvestTime = (int)(objPlant.getIntHarvestTime() * 0.85);
-                break;
-
-            default:
-                intHarvestTime = objPlant.getIntHarvestTime();
-                break;
-        }
+        // Increment Plant Age
+        intPlantAge++;
 
         // If Plant is ready to Harvest
-        if (intStatus == OCCUPIED &&
-            intPlantAge == intHarvestTime) {
+        if (intPlantAge == objPlant.getIntHarvestTime()) {
 
-            // Set Tile Status to Harvestable
-            intStatus = HARVESTABLE;
+            // If Plant's Conditions are Met
+            if (intWateredNum >= objPlant.getIntWaterReq() &&
+                    intFertilizedNum >= objPlant.getIntFertilizerReq()) {
+
+                // Set Tile Status to Harvestable
+                intStatus = HARVESTABLE;
+            }
+
+            // Else Plant's Conditions are not Met
+            else {
+
+                // Set Tile Status to Withered
+                intStatus = WITHERED;
+            }
         }
 
-        // If Tile is pass harvest time
-        if (intStatus == HARVESTABLE &&
-            intPlantAge > intHarvestTime) {
+        // If Plant is pass its Harvest Day
+        else if (intPlantAge == objPlant.getIntHarvestTime() + 1) {
 
             // Set Tile Status to Withered
             intStatus = WITHERED;
         }
+    }
+
+        
+    
+    /**
+     * plantSeed
+     * - Sets the Tile's Plant.
+     * 
+     * @param objSeed Plant to set the Tile's Plant to.
+     * @param objPlayer Player who is planting the Seed.
+     * @param objBoard Board the Tile is on.
+     *
+     * @return True if Plant was set, False otherwise.
+     */
+    public boolean plantSeed (Plant objSeed, Farmer objPlayer, Board objBoard) {
+
+        // Switch Objectcoin Cost with Bonuses
+        int intNewSeedCost;
+        switch (objPlayer.getStrTitle) {
+
+            case "Registered Farmer":
+                intNewSeedCost = objSeed.getIntSeedCost() - 1;
+                break;
+
+            case "Distinguished Farmer":
+                intNewSeedCost = objSeed.getIntSeedCost() - 2;
+                break;
+
+            case "Legendary Farmer":
+                intNewSeedCost = objSeed.getIntSeedCost() - 3;
+                break;
+
+            default:
+                intNewSeedCost = objSeed.getIntSeedCost();
+                break;
+        }
+
+        // If Player has not enough Objectcions to plant Seed
+        if (objPlayer.getIntObjectCoins() < intNewSeedCost)
+            return false;
+
+        // If Tile is Not Plowed
+        if (intStatus != PLOWED)
+            return false;
+
+        // If Plant is a Tree
+        if (objSeed.getIntCropType() == Plant.TREE) {
+
+            // For each Tile in a 3x3 Square
+            for (int i = intRowCoord-1; i <= intRowCoord+1; i++) {
+
+                for (int j = intColCoord-1; j <= intColCoord+1; j++) {
+
+                    // If Tile is Not Unplowed or Plowed (Occupied by something)
+                    if (objBoard.getObjTile(i, j).getIntStatus() != UNPLOWED &&
+                            objBoard.getObjTile(i, j).getIntStatus() != PLOWED)
+                        return false;
+                }
+            }
+        }
+
+        // Set Tile Status to Occupied
+        intStatus = Tile.OCCUPIED;
+
+        // Set Plant
+        objPlant = objSeed;
+
+        // Use Objectcoins
+        objPlayer.setIntObjectCoins(objPlayer.getIntObjectCoins() - intNewSeedCost);
+
+        return true;
     }
 
 
@@ -95,17 +196,26 @@ public class Tile {
 
     /* ----- ----- ----- Getters and Setters ----- ----- ----- */
 
+    public int getIntRowCoord() {return intRowCoord;}
+    public void setIntRowCoord(int intRowCoord) {this.intRowCoord = intRowCoord;}
+
+    public int getIntColCoord() {return intColCoord;}
+    public void setIntColCoord(int intColCoord) {this.intColCoord = intColCoord;}
+
     public int getIntStatus() {return intStatus;}
     public void setIntStatus(int intStatus) {this.intStatus = intStatus;}
-
-    public int getIntFertilizedNum() {return intFertilizedNum;}
-    public void setIntFertilizedNum(int intFertilizedNum) {this.intFertilizedNum = intFertilizedNum;}
 
     public int getIntWateredNum() {return intWateredNum;}
     public void setIntWateredNum(int intWateredNum) {this.intWateredNum = intWateredNum;}
 
     public boolean isBoolWateredToday() {return boolWateredToday;}
     public void setBoolWateredToday(boolean boolWateredToday) {this.boolWateredToday = boolWateredToday;}
+
+    public int getIntFertilizedNum() {return intFertilizedNum;}
+    public void setIntFertilizedNum(int intFertilizedNum) {this.intFertilizedNum = intFertilizedNum;}
+
+    public boolean isBoolFertilizedToday() {return boolFertilizedToday;}
+    public void setBoolFertilizedToday(boolean boolFertilizedToday) {this.boolFertilizedToday = boolFertilizedToday;}
 
     public Plant getObjPlant() {return objPlant;}
     public void setObjPlant(Plant objPlant) {this.objPlant = objPlant;}
