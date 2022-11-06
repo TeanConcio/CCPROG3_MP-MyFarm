@@ -2,12 +2,14 @@ Title: MyFarm
 
 
 Questions:
-	- Advancing and progression via days or minutes
-	- Fertilizer either happening before or after planting
-	- Plow or Shovel removing withered plants
-		~ Plow paying either 10% or 2 OC to remove
-	- Withered crop stays indefinitely or x2 Harvesting time
-	- Harvest Exp Gain
+	- 
+
+Considerations:
+	- Status at the end of the day
+	- New Class for Farmer Title
+	- Farmer Title being an int
+		~ With a getString method
+	- Method that shows what to display
 
 
 
@@ -49,10 +51,9 @@ III. End Conditions
 
 IV. Starting Equipment
 	1. 10 by 5 farm plot
-	2. 0 seeds
-	3. 5 fertilizer
-	4. 100 Objectcoins
-	5. Farmer Level 0
+	2. 5 fertilizer
+	3. 100 Objectcoins
+	4. Farmer Level 0
 
 
 
@@ -61,8 +62,8 @@ IV. Starting Equipment
 V. Farming Process
 	1. Starting farm only has unplowed tiles at the start
 	2. Farmer needs to plow land using plowing tool
-	3. After plowing, has option to plant seeds or fertilize
-	4. After plant seed, has option to water
+	3. After plowing, has option to plant seeds
+	4. After plant seed, has option to water or fertilize
 	5. Plants stay on the tile forever unless harvested
 	6. Plants will wither if not taken care of
 		- If withered, then tile cannot be used anymore
@@ -105,7 +106,7 @@ VII. Withered Crops
 	
 	B. Using Shovel Outside of Intended Purpose
 		- All actions require 7 Objectcoins
-		1. Using Shovel to a unplowed tile does nothing
+		1. Using Shovel to a unplowed or rock tile does nothing
 		2. Using Shovel on a crop tile will remove the plant and make the tile unplowed
 
 
@@ -115,79 +116,81 @@ VII. Withered Crops
 VIII. Farm Progression
 	
 	A. Level Mechanics
-		- Player gains a specific amount of XP per harvested crop
+		- Player gains a specific amount of XP per harvested crop or using tool
+		- Player automatically levels up
 		- Player start with 0 XP
 		- After enough XP, Player will level up
 		- Player levels up in increments of 100
 		
 	B. Farm Registration
-		- After certain levels, player can register their farm
+		- After certain levels, player can register their farm for a fee
 		- Registration is not automatic
-			~ Players need to manually register
+			~ Players need to manually register with a fee
 		- Registration has a cost but brings benefits
-			~ Some benefits include increase harvest price and spending less for purchases
+			~ Bonous Ernings per Produce
+			~ Seed Cost Reduction
+			~ Water Bonus Limit Increase
+			~ Fertilizer Bonus Limit Increase
 				*** Consider this for the Crop Price
-		- Registration has 4 tiers at level 0, 10, 15, 20
+		- Registration has 4 tiers at level 0, 5, 10, 15
+			~ Farmer (default)
+			~ Registered Farmer
+			~ Distinguished Farmer
+			~ Legendary Farmer
 
 
 
 
 
 IX. Farming Tools
+	- Use Cost is immediately deducted from Farmer wallet
 	
 	A. Watering Can
+		- EXP Gain: 0.5
+		- Use Cost: 0
 		- Water a crop tile
 		- Has infinite water
+		- Can only be used on a occupied tile
 	
 	B. Plow
+		- EXP Gain: 0.5
+		- Use Cost: 0
 		- Prepares a tile for plating
 		- Removes withered plants for 2 OC ?????
 	
 	C. Shovel
+		- EXP Gain: 2
+		- Use Cost: 7
 		- Removes withered plants for 7 OC
 	
 	D. Pickaxe
-		- Removes rocks for 50 OC
+		- EXP Gain: 15
+		- Use Cost: 50 OC
+		- Can only be used on Rock Tiles
 	
 	E. Fertilizer
+		- EXP Gain: 4
+		- Use Cost: 10 OC
 		- Fertilizes a tile
 		- Bought in finite amounts
 			~ Costs 10 OC
 		- Player starts with 5 fertilizers
-		- Must be placed on a plowed tile
-			~ Cannot be placed on a plant tile
+		- Can only be used on a occupied tile
 
 
 
 
 
 X. Player Vision
-		
-	A. Farm Field
-		- Place to plant crops
-		- Is 10 by 5 tiles big
-		- All tiles are at first unplowed or has rocks
-		- Player should be able to see each tile and its status
-		- Statuses:
-			unplowed
-			rocks
-			plowed
-			fertilized
-			watered
-			occupied by crop
-			occupied by withered crop
-	
-	B. Player Inventory
-		- Should display tools and seeds
-	
-	C. Tool Tips
-		- An area that shows status of selected objects
-		1. Select Tile
-			- Show information and status of tile
-		2. Select Tool
-			- Shows tool information and tool options
-		3. Select Seed
-			- Shows seed information and options to either plant or buy more
+	- Given the freedom to implement how the player interacts with the game
+	- Player interacts with tiles 
+		~ View tile information and in interact with tiles
+	- The player views their current experience/level
+	- The player can register for the next farmer type
+	- The player can proceed to the next day
+	- Player don’t have enough money to use the pickaxe, the player should be informed. 
+	- If a player harvests a crop successfully, they should be informed of the details of the harvest
+	- Prioritize functionality over form / style
 
 
 
@@ -198,13 +201,17 @@ XI. Seeds
 	- Each seed takes 1 tile
 		~ Except Fruit Trees
 	- Different crops have different needs of water, fertilizer, and time
+		~ Will wither otherwise
 	
 	A. Crop Types
-		1. Vegetables
+		1. Root Crop
 		2. Flowers
 			- Have crop bonus cuz they are pretty
 		3. Fruit Trees
-			- All adjacent tiles should not have crops
+			- All adjacent tiles and diagonals should not have crops, withered crops, or rocks
+			- After planting fruit trees, other crops and objects can be planted beside them
+			- Not allowed to be planted on corners or far sides of the farm
+			
 	
 	B. Crop Stats
 		1. Seed Name
@@ -219,38 +226,55 @@ XI. Seeds
 			- Minimum times watered to yield
 			a. Bonus Limit
 				- Limit for Water Bonus
+				- No Penalty if Over
 		5. Fertilizer Needed
 			- Minimum fertilizers used before planting to yield
 			a. Bonus Limit
-				- Fertilizer for Fertilizer Bonus
-		6. Harvest Cost
-			- Cost to harvest the Crop
-		7. Number of Produce Produced
+				- Limit for Fertilizer Bonus
+				- No Penalty if Over
+		6. Number of Products Produced
 			- n Number of Produce Produced per harvest
 			- Immediately sold upon harvest
-		8. Seed Cost
+		7. Seed Cost
 			- Price to buy the seed
-		9. Base Selling Cost per Piece Produced
+				~ No more inventory
+				~ Immediately deducted from wallet
+		8. Base Selling Cost per Piece
 			- Base Selling Cost of each piece of produce
+		9. Experience Yield
+			- Experience gained after harvesting
 	
 	C. Crop Product Selling Price Equation
 		- Indicates the actual selling price of an individual crop's produce
-				sp = flb + bp + wb + fb + cb
-			~ sp  : Selling Price
-			  flb : Farmer Level Bonus
-			  bp  : base price
-			  wb  : water bonus
-					wb = times watered * 0.25 * bp
-			  fb  : fertilizer bonus
-					fb = fertilizers used * 0.50 * bp
-			  cb  : crop bonus (Only for flowers)
-					cb = 0.05 * (bp + wb + fb)
+				FinalHarvestPrice = HarvestTotal + WaterBonus + FertilizerBonus
+			~ HarvestTotal = ProductsProduced x (BaseSellingPricePerPiece + FarmerTypeEarningBonus)
+			~ WaterBonus = HarvestTotal x 0.2 x (TimesCropWasWatered – 1)
+			~ FertilizerBonus = HarvestTotal x 0.5 x TimesCropAddedFertilizer
+		- Flowers have a bonus added to them
+			FinalHarvestPrice = FinalHarvestPrice * 1.1
+			
 	
 	D. Harvesting
 		- If water and fertilizer needs are not met at the time of harvesting they will not produce a produce and will wither
 		- Products disappear after 1 minutes of not harvesting and the crop will wither
-		- Player is alerted if success or failure of harvest, produced products, and how much profit
-		- A withered crop stays on the tile for the duration of x2 crop's Harvest Time ???
-			~ To remove withered crop, pay 10% of Seed Cost to the plow tool
+		- Player is alerted how much produced products, and how much profit
+			~ Also alerted if crop withers
+
+
+
+
+
+XII. Advancing to the Next Day
+	- Starts at Day 1
+	- Players can advance day when they want
+	- Next day should update all entities
 	
-	
+
+
+
+
+XIII. New Features
+	- Day End Summary
+	- Great Constants Maintainability
+		~ FarmerTitle
+	- Implemented water and fertilizer limit per day
