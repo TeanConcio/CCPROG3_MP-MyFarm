@@ -127,19 +127,16 @@ public class Tile {
      *
      * @param objSeed Plant to set the Tile's Plant to.
      * @param objPlayer Player who is planting the Seed.
-     * @param objBoard Board the Tile is on.
+     * @param arrobjBoard Board the Tile is on.
      *
      * @return True if Plant was set, False otherwise.
      */
     public boolean plantSeed (Plant objSeed,
                               Farmer objPlayer,
-                              Board objBoard) {
-
-        // Switch Objectcoin Cost with Bonuses
-        float fltNewSeedCost = objSeed.getFltSeedCost() - objPlayer.getObjCurrentTitle().getFltSeedDiscount();
+                              Tile[][] arrobjBoard) {
 
         // If Player has not enough Objectcions to plant Seed
-        if (objPlayer.getFltObjectCoins() < fltNewSeedCost)
+        if (objPlayer.getFltObjectCoins() < objSeed.getFltDiscountSeedCost())
             return false;
 
         // If Tile is Not Plowed
@@ -150,8 +147,8 @@ public class Tile {
         if (objSeed.getIntCropType() == Plant.TREE) {
 
             // If Tile is at the Edge of the Board
-            if (intRowCoord == 0 || intRowCoord == objBoard.ROW - 1 ||
-                    intColCoord == 0 || intColCoord == objBoard.COLUMN - 1)
+            if (intRowCoord == 0 || intRowCoord == Board.ROW - 1 ||
+                    intColCoord == 0 || intColCoord == Board.COLUMN - 1)
                 return false;
 
             // For each Tile in a 3x3 Square
@@ -160,8 +157,8 @@ public class Tile {
                 for (int j = intColCoord-1; j <= intColCoord+1; j++) {
 
                     // If Tile is Not Unplowed or Plowed (Occupied by something)
-                    if (objBoard.getObjTile(i, j).getIntStatus() != UNPLOWED &&
-                            objBoard.getObjTile(i, j).getIntStatus() != PLOWED)
+                    if (arrobjBoard[i][j].getIntStatus() != UNPLOWED &&
+                            arrobjBoard[i][j].getIntStatus() != PLOWED)
                         return false;
                 }
             }
@@ -174,9 +171,55 @@ public class Tile {
         objPlant = objSeed;
 
         // Use Objectcoins
-        objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - fltNewSeedCost);
+        objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - objPlant.getFltDiscountSeedCost());
 
         return true;
+    }
+
+
+
+    public String getTileStatusString(boolean boolGetCharNotWord) {
+
+        switch (intStatus) {
+
+            case ROCK:
+                if (boolGetCharNotWord)
+                    return "R";
+                else
+                    return "Rock";
+
+            case UNPLOWED:
+                if (boolGetCharNotWord)
+                    return "U";
+                else
+                    return "Unplowed";
+
+            case PLOWED:
+                if (boolGetCharNotWord)
+                    return "P";
+                else
+                    return "Plowed";
+
+            case OCCUPIED:
+                if (boolGetCharNotWord)
+                    return "O";
+                else
+                    return "Occupied";
+
+            case HARVESTABLE:
+                if (boolGetCharNotWord)
+                    return "H";
+                else
+                    return "Harvestable";
+
+            case WITHERED:
+                if (boolGetCharNotWord)
+                    return "W";
+                else
+                    return "Withered";
+        }
+
+        return "Error";
     }
 
 

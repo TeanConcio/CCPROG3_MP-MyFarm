@@ -64,6 +64,8 @@ public class FarmerTitle {
         objPlayer.setObjCurrentTitle(objNextTitle);
 
         objShop.updateShop(objPlayer.getObjCurrentTitle());
+
+        return true;
     }
 
 
@@ -78,8 +80,8 @@ public class FarmerTitle {
     public String getStrFarmerTitle() {return strFarmerTitle;}
     public void setStrFarmerTitle(String strFarmerTitle) {this.strFarmerTitle = strFarmerTitle;}
 
-    public float getfltEXPReq() {return fltEXPReq;}
-    public void setfltEXPReq(float fltEXPReq) {this.fltEXPReq = fltEXPReq;}
+    public float getFltEXPReq() {return fltEXPReq;}
+    public void setFltEXPReq(float fltEXPReq) {this.fltEXPReq = fltEXPReq;}
 
     public float getFltEarningBonus() {return fltEarningBonus;}
     public void setFltEarningBonus(float fltEarningBonus) {this.fltEarningBonus = fltEarningBonus;}

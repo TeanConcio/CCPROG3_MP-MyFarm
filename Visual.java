@@ -5,11 +5,10 @@ public class Visual {
      * - This method displays the status of the player.
      *
      * @param objPlayer The player in question.
-     * @param intDay The current day number of the game.
-     *
+     * @param intDay    The current day number of the game.
      * @return True if the conditions were met, False otherwise.
      */
-     public void printFarmerStatus (Farmer objPlayer, int intDay) {
+    public void displayFarmerStatus(Farmer objPlayer, int intDay) {
 
         System.out.println("Day " + intDay + "\n");
 
@@ -24,59 +23,39 @@ public class Visual {
      * - This method displays the status of the tile.
      *
      * @param objTile The tile in question.
-     *
      * @return True if the conditions were met, False otherwise.
      */
-    public void printTileStatus (Tile objTile) {
+    public void displayTileStatus(Tile objTile) {
 
         String strCoordinate;
-        String strStatus = " ";
-        strCoordinate = Character.toString(numberToLetter(objTile.getIntColCoord()));
-        strCoordinate = strCoordinate.concat(Character.toString((char) (objTile.getIntRowCoord() + 1)));
-        System.out.println("Tile " + strCoordinate + ":");
+        String strStatus;
 
-        switch (objTile.getIntStatus()){
-            case Tile.ROCK:
-                strStatus = "Rock";
-                break;
-            case Tile.UNPLOWED:
-                strStatus = "Unplowed";
-                break;
-            case Tile.PLOWED:
-                strStatus = "Plowed";
-                break;
-            case Tile.OCCUPIED:
-                strStatus = "Occupied";
-                break;
-            case Tile.HARVESTABLE:
-                strStatus = "Harvestable";
-                break;
-            case Tile.WITHERED:
-                strStatus = "Withered";
-                break;
-        }
+        strCoordinate = Character.toString(convertNumberToLetter(objTile.getIntColCoord()));
+        strCoordinate = strCoordinate.concat(Integer.toString(objTile.getIntRowCoord() + 1));
+        System.out.println("Tile " + strCoordinate + " :");
 
-        System.out.println("Status: " + strStatus);
+        System.out.println("Status: " + objTile.getTileStatusString(false));
 
         if (objTile.getObjPlant() != null) {
             System.out.print("Plant: " + objTile.getObjPlant().getStrSeedName() + " - ");
-            System.out.println(objTile.getIntPlantAge());
+            System.out.println(objTile.getIntPlantAge() + " days old");
         }
 
-        System.out.println("Watered " + objTile.getIntTimesWatered() + "times");
-        System.out.println("Fertilized " + objTile.getIntTimesFertilized() + "times\n");
+        System.out.println("Watered " + objTile.getIntTimesWatered() + " times");
+        System.out.println("Fertilized " + objTile.getIntTimesFertilized() + " times\n");
     }
 
     /**
      * displayOptions
      * - This method displays the available things to do on a tile
      *
-     * @param objTile The tile in question.
+     * @param objTile  The tile in question.
      * @param fltMoney Amount of money currently owned.
      */
-    public void displayOptions (Tile objTile, float fltMoney) {
+    public void displayOptions(Tile objTile, float fltMoney) {
 
         System.out.println("What will you do to the tile?");
+        System.out.println("Options:");
 
         switch (objTile.getIntStatus()) {
             case Tile.ROCK:
@@ -90,33 +69,46 @@ public class Visual {
                 break;
             case Tile.OCCUPIED:
                 System.out.println("Water");
+                if (fltMoney >= 10)
+                    System.out.println("Fertilize");
                 if (fltMoney >= 7)
                     System.out.println("Shovel");
+                break;
             case Tile.HARVESTABLE:
                 System.out.println("Harvest");
+                break;
             case Tile.WITHERED:
+                if (fltMoney >= 7)
+                    System.out.println("Shovel");
+                break;
         }
-
-        System.out.println("\n");
     }
 
     /**
      * printBoard
-     * - This method displays the board
+     * - This method displays the board with a chess-like coordinate system.
      *
-     * @param objBoard The board in question.
+     * @param objBoard Board to display.
      */
-    public void printBoard (Board objBoard) {
+    public void displayBoard(Board objBoard) {
 
-        for (int i = 0; i < objBoard.getIntBoardSize(); i++) {
+        System.out.println("Farm Board:");
+        System.out.println("      A   B   C   D   E");
+        System.out.println("   -----------------------");
 
-            for (int j = 0; j < objBoard.getIntBoardSize(); j++) {
+        for (int i = 0; i < objBoard.ROW; i++) {
 
-                System.out.print(objBoard.getObjTile(i, j).getIntStatus() + " ");
-            }
+            System.out.printf("%2d | ", (i + 1));
 
-            System.out.println();
+            for (int j = 0; j < objBoard.COLUMN; j++)
+
+                System.out.printf("[%s] ", objBoard.getArrObjTile()[i][j].getTileStatusString(true));
+
+            System.out.printf("| %2d\n", (i + 1));
         }
+
+        System.out.println("      A   B   C   D   E");
+        System.out.println("   -----------------------");
     }
 
     /**
@@ -128,10 +120,11 @@ public class Visual {
      *
      * @return True if the conditions were met, False otherwise.
      */
-    public void printEndScreen (Farmer objFarmer, int intDay) {
+    public void displayEndScreen(Farmer objFarmer, int intDay) {
         System.out.println("Farmer fell to the throes of capitalism in day " + intDay + "\n");
 
-        printStatus(objFarmer, intDay);
+        // TODO Fix Comments
+        displayFarmerStatus(objFarmer, intDay);
 
         System.out.println("The farmer gave up, life is meaningless, why even farm.");
         System.out.println("The farmer now plays League of Legends instead.");
@@ -147,7 +140,7 @@ public class Visual {
      *
      * @return The uppercase letter equivalent of the number.
      */
-    public char numberToLetter (int intNumber) {
+    public char convertNumberToLetter(int intNumber) {
         return (char) (intNumber + 65);
     }
 
@@ -159,13 +152,14 @@ public class Visual {
      */
     public void printShopItems(Shop objShop) {
 
-        System.out.printf("Seeds (%d) :", objShop.intPlantNums);
+        System.out.printf("Seeds (%d) :\n", objShop.getArrObjPlants().size());
 
-        for (int i = 0; i < objShop.intPlantNums; i++) {
+        for (int i = 0; i < objShop.getArrObjPlants().size(); i++) {
 
-            System.out.printf("  %d : %s\n", i, objShop.arrobjPlants[i].getStrSeedName());
-            System.out.printf("    - Seed Cost : %d\n", objShop.arrobjPlants[i].getFltDiscountedSeedCost());
-            System.out.printf("    - Harvest Time : %d\n", objShop.arrobjPlants[i].getIntHarvestTime());
+            System.out.printf("  [%d] : %s\n", i+1, objShop.getObjPlant(i).getStrSeedName());
+            System.out.printf("    - Seed Cost : %.2f\n", objShop.getObjPlant(i).getFltDiscountSeedCost());
+            System.out.printf("    - Harvest Time : %d\n", objShop.getObjPlant(i).getIntHarvestTime());
+            System.out.printf("    - Produce Value : %.2f\n", objShop.getObjPlant(i).getFltIncreasedProducePrice());
         }
     }
 }

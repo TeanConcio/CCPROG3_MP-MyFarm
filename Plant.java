@@ -20,7 +20,8 @@ public class Plant {
     private float fltBaseProducePrice;
     private float fltHarvestEXP;
 
-    private float fltDiscountdSeedCost;
+    private float fltDiscountSeedCost;
+    private float fltIncreasedProducePrice;
 
 
 
@@ -71,7 +72,8 @@ public class Plant {
         this.fltBaseProducePrice = fltBaseProducePrice;
         this.fltHarvestEXP = fltHarvestEXP;
 
-        this.fltDiscountdSeedCost = fltBaseSeedCost;
+        this.fltDiscountSeedCost = fltBaseSeedCost;
+        this.fltIncreasedProducePrice = fltBaseProducePrice;
     }
 
 
@@ -97,8 +99,11 @@ public class Plant {
     
     
     
-    public void updateDiscountedSeedCost (float fltDiscount) {
-        this.fltDiscountdSeedCost = this.fltBaseSeedCost - fltDiscount;
+    public void updatePricesFromTitle(FarmerTitle objTitle) {
+
+        this.fltDiscountSeedCost = this.fltBaseSeedCost - objTitle.getFltSeedDiscount();
+
+        this.fltIncreasedProducePrice = this.fltBaseProducePrice + objTitle.getFltEarningBonus();
     }
 
 
@@ -126,8 +131,7 @@ public class Plant {
         float fltFertilizerBonus;
 
         // Get Title Bonus
-        fltHarvestTotal = intProductsProduced * (intBaseProducePrice +
-                objTitle.getFltEarningBonus());
+        fltHarvestTotal = intProductsProduced * this.fltIncreasedProducePrice;
 
         // Calculate Water Bonus
         intNewWaterLimit = this.intWaterLimit + objTitle.getIntWaterLimInc();
@@ -187,11 +191,14 @@ public class Plant {
     public void setFltBaseSeedCost(float fltBaseSeedCost) {this.fltBaseSeedCost = fltBaseSeedCost;}
 
     public float getFltBaseProducePrice() {return fltBaseProducePrice;}
-    public void setFltBaseProducePrice(int fltBaseProducePrice) {this.intBaseProducePrice = intBaseProducePrice;}
+    public void setFltBaseProducePrice(int fltBaseProducePrice) {this.fltBaseProducePrice = fltBaseProducePrice;}
 
     public float getFltHarvestEXP() {return fltHarvestEXP;}
     public void setFltHarvestEXP(float fltHarvestEXP) {this.fltHarvestEXP = fltHarvestEXP;}
 
-    public float getFltDiscountdSeedCost() {return fltDiscountdSeedCost;}
-    public void setFltDiscountdSeedCost(float fltDiscountdSeedCost) {this.fltDiscountdSeedCost = fltDiscountdSeedCost;}
+    public float getFltDiscountSeedCost() {return fltDiscountSeedCost;}
+    public void setFltDiscountSeedCost(float fltDiscountSeedCost) {this.fltDiscountSeedCost = fltDiscountSeedCost;}
+
+    public float getFltIncreasedProducePrice() {return fltIncreasedProducePrice;}
+    public void setFltIncreasedProducePrice(float fltIncreasedProducePrice) {this.fltIncreasedProducePrice = fltIncreasedProducePrice;}
 }

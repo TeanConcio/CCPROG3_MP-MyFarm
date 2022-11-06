@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Controller {
@@ -12,62 +13,80 @@ public class Controller {
             Board objBoard = new Board ();
             Shop objShop = new Shop();
 
+            Scanner input = new Scanner(System.in);
+
+            String strInput;
+            String strTileName;
+            int intSelectedRow;
+            int intSelectedCol;
+
             Tile objSelectedTile;
-
-            String strSample = "A1";
-            String strTemp;
-
-            int[] arrintCoords = new int[2];
-            int intDayNum = 1;
 
             boolean boolTileSelect = true;
 
-            Scanner input = new Scanner(System.in);
-
             //main gameplay loop
-            while (isGameOver(objFarmer.getFltObjectCoins(), objSelectedTile)) {
-                objVisual.printFarmerStatus(objFarmer, intDayNum);
+            // While not Game Over
+            while (!isGameOver(objFarmer.getFltObjectCoins(),
+                    objBoard.hasLiveTiles(),
+                    objShop.getCheapestSeedPrice(),
+                    objFarmer.getObjShovel().getFltUseCost())) {
 
-                System.out.print("\nSelect tile? (Yes/No) ");
-                if (input.nextLine() != "Yes")
+                objVisual.displayFarmerStatus(objFarmer, objBoard.getIntDay());
+                objVisual.displayBoard(objBoard);
+
+                System.out.print("\nSelect tile? (Yes/No) : ");
+                strInput = input.nextLine();
+                if (!Objects.equals(strInput, "Yes") && !Objects.equals(strInput, "yes"))
                     boolTileSelect = false;
+                else
+                    boolTileSelect = true;
 
                 //loops until the player opts not to select a tile
                 while (boolTileSelect) {
-                    //lets the player choose a tile to do things on
-                    System.out.print("Which Tile? ");
-                    strSample = input.nextLine();
-                    strTemp = strSample;
-                    arrintCoords[1] = objBoard.letterToNumber(strSample.charAt(0));
-                    arrintCoords[0] = objBoard.letterToNumber(strSample.charAt(1));
 
-                    System.out.println(arrintCoords[0] + " " + arrintCoords[1]);
-                    objSelectedTile = new Tile(arrintCoords[0], arrintCoords[1], Tile.UNPLOWED);
-                    objVisual.printTileStatus (objSelectedTile);
+                    //lets the player choose a tile to do things on
+                    System.out.print("Which Tile? (Ex: A1) : ");
+                    strInput = input.nextLine();
+                    strTileName = strInput.toUpperCase();
+
+                    objSelectedTile = objBoard.getTileFromCoords(strTileName);
+                    objVisual.displayTileStatus(objSelectedTile);
 
                     objVisual.displayOptions(objSelectedTile, objFarmer.getFltObjectCoins());
 
-                    strSample = input.nextLine();
+                    System.out.print("Action : ");
+                    strInput = input.nextLine();
 
                     //decides which tool to use based on the input
-                    switch (strSample) {
+                    switch (strInput) {
+                        // TODO do encapsulation
+                        // TODO check for Watered and Fertilized Today
                         case "Pickaxe":
                             objFarmer.getObjPickaxe().useTool(objSelectedTile, objFarmer);
+                            System.out.println("Tile " + strTileName + " rock removed!");
                             break;
                         case "Plow":
                             objFarmer.getObjPlow().useTool(objSelectedTile, objFarmer);
-                            System.out.println("Tile " + strTemp + "plowed!");
+                            System.out.println("Tile " + strTileName + " plowed!");
                             break;
                         case "Plant":
                             objVisual.printShopItems(objShop);
+                            System.out.print("Which seed? : ");
+                            strInput = input.nextLine();
+                            objSelectedTile.plantSeed(objShop.getObjPlant(Integer.parseInt(strInput)-1), objFarmer, objBoard.getArrObjTile());
+                            // TODO : Add plant selection input
                             break;
                         case "Water":
                             objFarmer.getObjWateringCan().useTool(objSelectedTile, objFarmer);
-                            System.out.println("Tile " + strTemp + "watered!");
+                            System.out.println("Tile " + strTileName + " watered!");
+                            break;
+                        case "Fertilize":
+                            objFarmer.getObjFertilizer().useTool(objSelectedTile, objFarmer);
+                            System.out.println("Tile " + strTileName + " fertilized!");
                             break;
                         case "Shovel":
                             objFarmer.getObjShovel().useTool(objSelectedTile, objFarmer);
-                            System.out.println("Tile " + strTemp + "shoveled!");
+                            System.out.println("Tile " + strTileName + " shoveled!");
                             break;
                         case "Harvest":
                             if (objSelectedTile.getIntStatus() == Tile.HARVESTABLE) {
@@ -78,16 +97,20 @@ public class Controller {
 
                     //asks if the player wants to select another tile
                     System.out.print("\nProceed day? (Yes/No) ");
-                    if (input.nextLine() != "No")
+                    strInput = input.nextLine();
+                    if (!Objects.equals(strInput, "No") && !Objects.equals(strInput, "no"))
                         boolTileSelect = false;
+                    else
+                        boolTileSelect = true;
+                    System.out.println();
                 }
 
-                //updates the game
-                if (objSelectedTile.getIntStatus() >= Tile.OCCUPIED)
-                    objSelectedTile.updateTile();
-
-                intDayNum++;
+                // Advances the day
+                objBoard.advanceDay();
             }
+
+            // Game Over
+            System.out.println("\nGame Over!");
 
             input.close();
         }

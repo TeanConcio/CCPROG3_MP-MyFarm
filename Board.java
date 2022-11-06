@@ -15,6 +15,10 @@ public class Board {
 
 
 
+
+
+    /* ----- ----- ----- Board Constructor ----- ----- ----- */
+
     public Board() {
 
         intDay = 1;
@@ -76,6 +80,30 @@ public class Board {
 
 
 
+
+    /* ----- ----- ----- Board Methods ----- ----- ----- */
+
+    public Tile getTileFromCoords (String strCoordinates) {
+
+        int intCol = convertLetterToNumber(strCoordinates.charAt(0));
+        int intRow = Integer.parseInt(strCoordinates.substring(1, strCoordinates.length())) - 1;
+
+        return arrobjTile[intRow][intCol];
+    }
+
+    public void advanceDay() {
+
+        for (int i = 0; i < ROW; i++) {
+
+            for (int j = 0; j < COLUMN; j++) {
+
+                arrobjTile[i][j].updateTile();
+            }
+        }
+
+        intDay++;
+    }
+
     public boolean hasLiveTiles () {
 
         for (int i = 0; i < ROW; i++) {
@@ -95,10 +123,27 @@ public class Board {
 
 
 
-    // Method to convert a letter to a number
-    public static int letterToNumber (char chrLetter) {
+    // Method to convert a letter to a number, for example A = 0, B = 1, C = 2, etc.
+    public static int convertLetterToNumber(char chrLetter) {
+
         if (chrLetter >= 30 && chrLetter <= 39)
             return (int) chrLetter - 31;
+
         return (int) chrLetter - 65;
     }
+
+
+
+
+
+    /* ----- ----- ----- Board Getters and Setters ----- ----- ----- */
+
+    public int getIntDay() {return intDay;}
+    public void setIntDay(int intDay) {this.intDay = intDay;}
+
+    public Tile[][] getArrObjTile() {return arrobjTile;}
+    public void setArrObjTile(Tile[][] arrobjTile) {this.arrobjTile = arrobjTile;}
+
+    public int getIntRockCount() {return intRockCount;}
+    public void setIntRockCount(int intRockCount) {this.intRockCount = intRockCount;}
 }
