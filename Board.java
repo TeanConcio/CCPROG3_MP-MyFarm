@@ -19,6 +19,10 @@ public class Board {
 
     /* ----- ----- ----- Board Constructor ----- ----- ----- */
 
+    /**
+     * Board Constructor
+     * - This constructor creates a Board object. Initializes Rocks if there is an input file.
+     */
     public Board() {
 
         intDay = 1;
@@ -41,7 +45,7 @@ public class Board {
                         intRockCount++;
                     }
                     
-                    // If there are more rocks than maximum rocks then add a plowed tile
+                    // If there are more rocks than maximum rocks then add an unplowed tile
                     else if (intRockCount >= MAX_ROCKS) {
                         arrobjTile[i][j] = new Tile(i, j, Tile.UNPLOWED);
                     }
@@ -83,6 +87,14 @@ public class Board {
 
     /* ----- ----- ----- Board Methods ----- ----- ----- */
 
+    /**
+     * getTileFromCoords
+     * - Returns the Tile at the given chess coordinates.
+     *
+     * @param strCoordinates String of Chess Coordinates.
+     *
+     * @return Tile at the given chess coordinates.
+     */
     public Tile getTileFromCoords (String strCoordinates) {
 
         int intCol = convertLetterToNumber(strCoordinates.charAt(0));
@@ -91,6 +103,12 @@ public class Board {
         return arrobjTile[intRow][intCol];
     }
 
+
+
+    /**
+     * advanceDay
+     * - Updates all Tiles in the board to the next day.
+     */
     public void advanceDay() {
 
         for (int i = 0; i < ROW; i++) {
@@ -104,6 +122,14 @@ public class Board {
         intDay++;
     }
 
+
+
+    /**
+     * hasLiveTiles
+     * - Checks if there are any usable tiles on the board.
+     *
+     * @return True if there are usable tiles, false otherwise.
+     */
     public boolean hasLiveTiles () {
 
         for (int i = 0; i < ROW; i++) {
@@ -123,11 +149,15 @@ public class Board {
 
 
 
-    // Method to convert a letter to a number, for example A = 0, B = 1, C = 2, etc.
+    /**
+     * convertLetterToNumber
+     * - Converts a letter to a number
+     *
+     * @param chrLetter Letter to be converted
+     *
+     * @return intNumber Number that corresponds to the letter
+     */
     public static int convertLetterToNumber(char chrLetter) {
-
-        if (chrLetter >= 30 && chrLetter <= 39)
-            return (int) chrLetter - 31;
 
         return (int) chrLetter - 65;
     }

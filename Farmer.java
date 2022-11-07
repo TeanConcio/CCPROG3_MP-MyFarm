@@ -11,22 +11,27 @@ public class Farmer {
     private final Tool objPickaxe = new Tool ("Pickaxe", 50f, 15f);
     private final Tool objFertilizer = new Tool ("Fertilizer", 10f, 4f);
 
-    private final FarmerTitle objTier0Title = new FarmerTitle(0, "Farmer", 0, 0, 0, 0, 0, 0f);
-    private final FarmerTitle objTier1Title = new FarmerTitle(1, "Registered Farmer", 5, 1, 1, 0, 0, 200f);
-    private final FarmerTitle objTier2Title = new FarmerTitle(2, "Distinguished Farmer", 10, 2, 2, 1, 0, 300f);
-    private final FarmerTitle objTier3Title = new FarmerTitle(3, "Legendary Farmer", 15, 3, 4, 3, 1, 400f);
+
+
+
 
     /* ----- ----- ----- Farmer Constructor ----- ----- ----- */
 
     /**
      * Farmer Constructor
      * - Creates a new Farm object.
+     *
+     * @param objCurrentTitle Current FarmerTitle of the Farmer.
      */
-    public Farmer() {
-         objCurrentTitle = objTier0Title;
-         fltEXP = 0;
-         fltObjectCoins = 100;
+    public Farmer(FarmerTitle objCurrentTitle) {
+         this.objCurrentTitle = objCurrentTitle;
+         this.fltEXP = 0f;
+         this.fltObjectCoins = 100f;
     }
+
+
+
+
 
     /* ----- ----- ----- Farmer Methods ----- ----- ----- */
 
@@ -36,14 +41,69 @@ public class Farmer {
      *
      * @param objTile Tile to harvest the crop from.
      */
-    public void harvestCrop (Tile objTile) {
+    public void harvestCrop (Tile objTile, int intProductsProduced) {
+
         //adds object coins based on the plant on the tile
-        fltObjectCoins += objTile.getObjPlant().computeProducePrice(objTile.getObjPlant().generateProductsProduced(),
-                          objCurrentTitle, objTile.getIntTimesWatered(), objTile.getIntTimesFertilized());
+        fltObjectCoins += objTile.computeHarvestProfit(intProductsProduced, objCurrentTitle);
+
+        //adds exp based on the plant on the tile
+        fltEXP += objTile.getObjPlant().getFltHarvestEXP();
 
         //removes the plant from the tile
         objTile.resetTile(Tile.UNPLOWED);
     }
+
+
+
+    /**
+     * canRegisterNextTitle
+     * - Returns true if the farmer can register for the next title.
+     *
+     * @param objTitleList List of Titles object.
+     *
+     * @return True if the farmer can register for the next title. False otherwise.
+     */
+    public boolean canRegisterNextTitle (TitleList objTitleList) {
+
+        FarmerTitle objNextTitle = objTitleList.getNextTitle(this.objCurrentTitle);
+
+        // If the next title is null, then the farmer has reached the max title
+        if (objNextTitle == null)
+            return false;
+
+        // If the player has enough Objectcoins and EXP to register the next title
+        if (this.getFltEXP() >= objNextTitle.getFltEXPReq() &&
+                this.getFltObjectCoins() >= objNextTitle.getFltRegistrationFee())
+            return true;
+
+        return false;
+    }
+
+
+
+    /**
+     * registerNextTitle
+     * - Registers the next title for the farmer.
+     *
+     * @param objTitleList List of Titles object.
+     */
+    public void registerNextTitle (TitleList objTitleList, Shop objShop) {
+
+        // If the player cannot register the next title
+        if (!canRegisterNextTitle(objTitleList))
+            return;
+
+        // Decrease Objectcoins
+        this.setFltObjectCoins(this.getFltObjectCoins() - objTitleList.getNextTitle(this.objCurrentTitle).getFltRegistrationFee());
+
+        // Register the next title
+        this.objCurrentTitle = objTitleList.getNextTitle(objCurrentTitle);
+
+        // Update the shop prices
+        objShop.updateShop(this.getObjCurrentTitle());
+    }
+
+
 
 
 

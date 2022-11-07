@@ -3,8 +3,7 @@ import java.util.ArrayList;
 public class Shop {
 
     /* ----- ----- ----- Shop Attributes ----- ----- ----- */
-
-    private int intPlantNums;
+    
     private ArrayList<Plant> arrobjPlants = new ArrayList<Plant>();
 
 
@@ -13,9 +12,11 @@ public class Shop {
 
     /* ----- ----- ----- Plant Constructor ----- ----- ----- */
 
+    /**
+     * Shop Constructor
+     * - This constructor creates a Shop object. Initializes all available Plants.
+     */
     public Shop () {
-
-        intPlantNums = 4;
 
         arrobjPlants.add(new Plant("Turnip", 0, 2, 1, 2, 0, 1, 1, 2, 5, 6, 5f));
         arrobjPlants.add(new Plant("Carrot", 0, 3, 1, 2, 0, 1, 1, 2, 10,9, 7.5f));
@@ -29,21 +30,32 @@ public class Shop {
 
     /* ----- ----- ----- Shop Methods ----- ----- ----- */
 
+    /**
+     * updateShop
+     * - Updates the prices of the plants in the shop.
+     *
+     * @param objFarmerTitle Current Title of the farmer.
+     */
     public void updateShop (FarmerTitle objFarmerTitle) {
 
-        for (int i = 0; i < intPlantNums; i++) {
+        for (int i = 0; i < arrobjPlants.size(); i++) {
 
             arrobjPlants.get(i).updatePricesFromTitle(objFarmerTitle);
         }
     }
 
 
-
+    /**
+     * getCheapestSeedPrice
+     * - Returns the cheapest seed price in the shop.
+     * 
+     * @return Cheapest seed price in the shop.
+     */
     public float getCheapestSeedPrice () {
 
         float fltCheapestSeedPrice = arrobjPlants.get(0).getFltDiscountSeedCost();
 
-        for (int i = 1; i < intPlantNums; i++) {
+        for (int i = 1; i < arrobjPlants.size(); i++) {
 
             if (fltCheapestSeedPrice > arrobjPlants.get(i).getFltDiscountSeedCost()) {
 
@@ -60,8 +72,7 @@ public class Shop {
 
     /* ----- ----- ----- Shop Getters and Setters ----- ----- ----- */
 
-    public int getIntPlantNums() {return intPlantNums;}
-    public void setIntPlantNums(int intPlantNums) {this.intPlantNums = intPlantNums;}
+    public int getIntPlantNums() {return arrobjPlants.size();}
 
     public ArrayList<Plant> getArrObjPlants() {return arrobjPlants;}
     public void setArrObjPlants(ArrayList<Plant> arrobjPlants) {this.arrobjPlants = arrobjPlants;}

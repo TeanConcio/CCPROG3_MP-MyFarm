@@ -55,19 +55,6 @@ public class FarmerTitle {
 
     /* ----- ----- ----- FarmerTitle Methods ----- ----- ----- */
 
-    public boolean registerFarmer (Farmer objPlayer, FarmerTitle objNextTitle, Shop objShop) {
-
-        if (objPlayer.getFltEXP() < objNextTitle.getFltEXPReq() ||
-            objPlayer.getFltObjectCoins() < objNextTitle.getFltRegistrationFee())
-            return false;
-
-        objPlayer.setObjCurrentTitle(objNextTitle);
-
-        objShop.updateShop(objPlayer.getObjCurrentTitle());
-
-        return true;
-    }
-
 
 
 

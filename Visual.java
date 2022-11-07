@@ -1,98 +1,28 @@
 public class Visual {
 
     /**
-     * printFarmerStatus
+     * displayFarmerStatus
      * - This method displays the status of the player.
      *
      * @param objPlayer The player in question.
-     * @param intDay    The current day number of the game.
-     * @return True if the conditions were met, False otherwise.
      */
-    public void displayFarmerStatus(Farmer objPlayer, int intDay) {
-
-        System.out.println("Day " + intDay + "\n");
+    public void displayFarmerStatus(Farmer objPlayer) {
 
         System.out.println("Farmer Stats:");
-        System.out.println("Level " + (int) (objPlayer.getFltEXP() / 100));
+        System.out.printf("Lv %d (EXP: %.1f)\n", (int) (objPlayer.getFltEXP() / 100), objPlayer.getFltEXP());
         System.out.println("Title: " + objPlayer.getObjCurrentTitle().getStrFarmerTitle());
-        System.out.println(objPlayer.getFltObjectCoins() + " Object Coins\n");
+        System.out.println(objPlayer.getFltObjectCoins() + " Object Coins");
     }
 
     /**
-     * printTileStatus
-     * - This method displays the status of the tile.
-     *
-     * @param objTile The tile in question.
-     * @return True if the conditions were met, False otherwise.
-     */
-    public void displayTileStatus(Tile objTile) {
-
-        String strCoordinate;
-        String strStatus;
-
-        strCoordinate = Character.toString(convertNumberToLetter(objTile.getIntColCoord()));
-        strCoordinate = strCoordinate.concat(Integer.toString(objTile.getIntRowCoord() + 1));
-        System.out.println("Tile " + strCoordinate + " :");
-
-        System.out.println("Status: " + objTile.getTileStatusString(false));
-
-        if (objTile.getObjPlant() != null) {
-            System.out.print("Plant: " + objTile.getObjPlant().getStrSeedName() + " - ");
-            System.out.println(objTile.getIntPlantAge() + " days old");
-        }
-
-        System.out.println("Watered " + objTile.getIntTimesWatered() + " times");
-        System.out.println("Fertilized " + objTile.getIntTimesFertilized() + " times\n");
-    }
-
-    /**
-     * displayOptions
-     * - This method displays the available things to do on a tile
-     *
-     * @param objTile  The tile in question.
-     * @param fltMoney Amount of money currently owned.
-     */
-    public void displayOptions(Tile objTile, float fltMoney) {
-
-        System.out.println("What will you do to the tile?");
-        System.out.println("Options:");
-
-        switch (objTile.getIntStatus()) {
-            case Tile.ROCK:
-                System.out.println("Pickaxe");
-                break;
-            case Tile.UNPLOWED:
-                System.out.println("Plow");
-                break;
-            case Tile.PLOWED:
-                System.out.println("Plant");
-                break;
-            case Tile.OCCUPIED:
-                System.out.println("Water");
-                if (fltMoney >= 10)
-                    System.out.println("Fertilize");
-                if (fltMoney >= 7)
-                    System.out.println("Shovel");
-                break;
-            case Tile.HARVESTABLE:
-                System.out.println("Harvest");
-                break;
-            case Tile.WITHERED:
-                if (fltMoney >= 7)
-                    System.out.println("Shovel");
-                break;
-        }
-    }
-
-    /**
-     * printBoard
+     * displayBoard
      * - This method displays the board with a chess-like coordinate system.
      *
      * @param objBoard Board to display.
      */
     public void displayBoard(Board objBoard) {
 
-        System.out.println("Farm Board:");
+        System.out.println("\nFarm Board:");
         System.out.println("      A   B   C   D   E");
         System.out.println("   -----------------------");
 
@@ -111,29 +41,55 @@ public class Visual {
         System.out.println("   -----------------------");
     }
 
-    /**
-     * printEndScreen
-     * - This method displays the status of the farmer along with a special message.
-     *
-     * @param objFarmer The farmer in question.
-     * @param intDay The current day number of the game.
-     *
-     * @return True if the conditions were met, False otherwise.
-     */
-    public void displayEndScreen(Farmer objFarmer, int intDay) {
-        System.out.println("Farmer fell to the throes of capitalism in day " + intDay + "\n");
+    // Display next Farmer Title Details
+    public void displayNextTitlePerks(TitleList objTitleList,
+                                      Farmer objPlayer) {
 
-        // TODO Fix Comments
-        displayFarmerStatus(objFarmer, intDay);
+        System.out.println("\nYou can advance to the next Farmer Title!\n");
 
-        System.out.println("The farmer gave up, life is meaningless, why even farm.");
-        System.out.println("The farmer now plays League of Legends instead.");
-        System.out.println("The farmer is now hardstuck in Bronze I. The farmer is at their promos.");
-        System.out.println("Spoiler alert, the farmer didn't make it.");
+        FarmerTitle objNextTitle = objTitleList.getNextTitle(objPlayer.getObjCurrentTitle());
+
+        System.out.println("Next Title: " + objNextTitle.getStrFarmerTitle());
+        System.out.println("\tLevel Requirement: " + (int)(objNextTitle.getFltEXPReq() / 100));
+        System.out.println("\tRegistration Fee: " + objNextTitle.getFltRegistrationFee());
+        System.out.println("\tSeed Discount: " + objNextTitle.getFltSeedDiscount());
+        System.out.println("\tEarning Bonus: " + objNextTitle.getFltEarningBonus());
     }
 
     /**
-     * numberToLetter
+     * displayTileStatus
+     * - This method displays the status of the tile.
+     *
+     * @param objTile The tile in question.
+     */
+    public void displayTileStatus(Tile objTile) {
+
+        String strCoordinate;
+
+        strCoordinate = Character.toString(convertNumberToLetter(objTile.getIntColCoord()));
+        strCoordinate = strCoordinate.concat(Integer.toString(objTile.getIntRowCoord() + 1));
+        System.out.println("\nTile " + strCoordinate + " :");
+
+        System.out.println("\tStatus: " + objTile.getTileStatusString(false));
+
+        // If Tile has Plant
+        if (objTile.getObjPlant() != null) {
+
+            System.out.print("\tPlant: " + objTile.getObjPlant().getStrSeedName() + " - ");
+            System.out.println(objTile.getIntPlantAge() + " days old");
+            System.out.println("\tDays before Harvest: " +
+                              (objTile.getObjPlant().getIntHarvestTime() - objTile.getIntPlantAge()));
+            System.out.println("\tWatered " + objTile.getIntTimesWatered() + " times");
+            System.out.println("\tFertilized " + objTile.getIntTimesFertilized() + " times");
+            System.out.println("\tWatered Today? " + objTile.isBoolWateredToday());
+            System.out.println("\tFertilized Today? " + objTile.isBoolFertilizedToday());
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * convertNumberToLetter
      * - This method converts an integer to a corresponding character
      *
      * @param intNumber The number being converted.
@@ -145,21 +101,91 @@ public class Visual {
     }
 
     /**
+     * displayOptions
+     * - This method displays the available things to do on a tile
+     *
+     * @param objTile The tile in question.
+     */
+    public void displayActionOptions(Farmer objPlayer,
+                                     Tile objTile) {
+
+        System.out.println("What will you do to the tile?");
+        System.out.println("Options:");
+
+        // If can use Pickaxe on Tile
+        if (objPlayer.getObjPickaxe().canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            System.out.println("Pickaxe - " + objPlayer.getObjPickaxe().getFltUseCost() + " Object Coins");
+
+        // If Tile can be Plowed
+        if (objPlayer.getObjPlow().canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            System.out.println("Plow");
+
+        // If Tile can be Planted
+        if (objTile.getIntStatus() == Tile.PLOWED)
+            System.out.println("Plant");
+
+        // If Tile can be Watered
+        if (objPlayer.getObjWateringCan().canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            System.out.println("Water");
+
+        // If Tile can be Fertilized
+        if (objPlayer.getObjFertilizer().canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            System.out.println("Fertilize - " + objPlayer.getObjFertilizer().getFltUseCost() + " Object Coins");
+
+        // If Tile is Harvestable
+        if (objTile.getIntStatus() == Tile.HARVESTABLE)
+            System.out.println("Harvest");
+
+        // If can use Shovel on Tile
+        System.out.println("Shovel - " + objPlayer.getObjShovel().getFltUseCost() + " Object Coins");
+    }
+
+    /**
      * printShopItems
      * - This method prints all available seeds to plant
      *
      * @param objShop The list of all available seeds.
      */
-    public void printShopItems(Shop objShop) {
+    public void printShopItems(Farmer objPlayer,
+                               Shop objShop) {
 
-        System.out.printf("Seeds (%d) :\n", objShop.getArrObjPlants().size());
+        System.out.printf("\nAvailable Seeds :\n");
 
         for (int i = 0; i < objShop.getArrObjPlants().size(); i++) {
 
+            // If Doesn't have enough Object Coins for Plant
+            if (objPlayer.getFltObjectCoins() < objShop.getObjPlant(i).getFltDiscountSeedCost())
+                continue;
+
+            // Print Seed Details
             System.out.printf("  [%d] : %s\n", i+1, objShop.getObjPlant(i).getStrSeedName());
             System.out.printf("    - Seed Cost : %.2f\n", objShop.getObjPlant(i).getFltDiscountSeedCost());
             System.out.printf("    - Harvest Time : %d\n", objShop.getObjPlant(i).getIntHarvestTime());
             System.out.printf("    - Produce Value : %.2f\n", objShop.getObjPlant(i).getFltIncreasedProducePrice());
+            System.out.printf("    - Water Requirement : %d (%d)\n", objShop.getObjPlant(i).getIntWaterReq(),
+                    objShop.getObjPlant(i).getIntWaterLimit());
+            System.out.printf("    - Fertilizer Requirement : %d (%d)\n", objShop.getObjPlant(i).getIntFertilizerReq(),
+                    objShop.getObjPlant(i).getIntFertilizerLimit());
         }
+    }
+
+    /**
+     * displayEndScreen
+     * - This method displays the status of the farmer along with a special message.
+     *
+     * @param objFarmer The farmer in question.
+     * @param intDay The current day number of the game.
+     */
+    public void displayEndScreen(Farmer objFarmer,
+                                 int intDay) {
+        System.out.println("Farmer fell to the throes of capitalism in Day " + intDay + "\n");
+
+        // TODO Fix Comments
+        displayFarmerStatus(objFarmer);
+
+        System.out.println("\nThe farmer gave up, life is meaningless, why even farm.");
+        System.out.println("The farmer now plays League of Legends instead.");
+        System.out.println("The farmer is now hardstuck in Bronze I. The farmer is at their promos.");
+        System.out.println("Spoiler alert, the farmer didn't make it.");
     }
 }

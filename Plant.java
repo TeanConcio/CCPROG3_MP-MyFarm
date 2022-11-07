@@ -92,66 +92,23 @@ public class Plant {
      *
      * @return Number of products produced in harvest.
      */
-    public int generateProductsProduced () {
+    public int getProduceQuantity() {
         return (int) (Math.random() * (this.intMaxProductsProduced -
                 this.intMinProductsProduced + 1) + this.intMinProductsProduced);
     }
-    
-    
-    
+
+
+    /**
+     * updatePricesFromTitle
+     * - This method updates the prices of the plant based on the Farmer's Title.
+     * 
+     * @param objTitle Farmer's Title.
+     */
     public void updatePricesFromTitle(FarmerTitle objTitle) {
 
         this.fltDiscountSeedCost = this.fltBaseSeedCost - objTitle.getFltSeedDiscount();
 
         this.fltIncreasedProducePrice = this.fltBaseProducePrice + objTitle.getFltEarningBonus();
-    }
-
-
-
-    /**
-     * computeProducePrice
-     * - Computes the price of the produce based on the base price and the number of products produced.
-     *
-     * @param intProductsProduced Number of products produced.
-     * @param objTitle Title of the farmer.
-     * @param intTimesWatered Number of times the plant was watered.
-     * @param intTimesFertilized Number of times the plant was fertilized.
-     *
-     * @return The price of the produce.
-     */
-    public float computeProducePrice (int intProductsProduced,
-                                      FarmerTitle objTitle,
-                                      int intTimesWatered,
-                                      int intTimesFertilized) {
-
-        float fltHarvestTotal;
-        int intNewWaterLimit;
-        int intNewFertilizerLimit;
-        float fltWaterBonus;
-        float fltFertilizerBonus;
-
-        // Get Title Bonus
-        fltHarvestTotal = intProductsProduced * this.fltIncreasedProducePrice;
-
-        // Calculate Water Bonus
-        intNewWaterLimit = this.intWaterLimit + objTitle.getIntWaterLimInc();
-        if (intTimesWatered > intNewWaterLimit)
-            fltWaterBonus = fltHarvestTotal * 0.2f * (intNewWaterLimit - 1);
-        else
-            fltWaterBonus = fltHarvestTotal * 0.2f * (intTimesWatered - 1);
-
-        // Calculate Fertilizer Bonus
-        intNewFertilizerLimit = this.intFertilizerLimit + objTitle.getIntFertLimInc();
-        if (intTimesFertilized > intFertilizerLimit)
-            fltFertilizerBonus = fltHarvestTotal * 0.5f * (intNewFertilizerLimit - 1);
-        else
-            fltFertilizerBonus = fltHarvestTotal * 0.5f * (intTimesFertilized - 1);
-
-        // Get Crop Bonus for Flowers
-        if (intCropType == Plant.FLOWER)
-            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus) * 1.1f;
-        else
-            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus);
     }
 
 

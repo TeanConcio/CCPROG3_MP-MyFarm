@@ -177,7 +177,12 @@ public class Tile {
     }
 
 
-
+    /**
+     * getTileStatusString
+     * - Returns the Tile's Status as a String or Character.
+     *
+     * @param boolGetCharNotWord True to get the Character, False to get the String.
+     */
     public String getTileStatusString(boolean boolGetCharNotWord) {
 
         switch (intStatus) {
@@ -220,6 +225,50 @@ public class Tile {
         }
 
         return "Error";
+    }
+
+
+
+    /**
+     * computeHarvestProfit
+     * - Computes the price of the produce based on the base price and the number of products produced.
+     *
+     * @param intProductsProduced Number of products produced.
+     * @param objTitle Title of the farmer.
+     *
+     * @return The price of the produce.
+     */
+    public float computeHarvestProfit (int intProductsProduced,
+                                       FarmerTitle objTitle) {
+
+        float fltHarvestTotal;
+        int intNewWaterLimit;
+        int intNewFertilizerLimit;
+        float fltWaterBonus;
+        float fltFertilizerBonus;
+
+        // Get Title Bonus
+        fltHarvestTotal = intProductsProduced * objPlant.getFltIncreasedProducePrice();
+
+        // Calculate Water Bonus
+        intNewWaterLimit = objPlant.getIntWaterLimit() + objTitle.getIntWaterLimInc();
+        if (intTimesWatered > intNewWaterLimit)
+            fltWaterBonus = fltHarvestTotal * 0.2f * (intNewWaterLimit - 1);
+        else
+            fltWaterBonus = fltHarvestTotal * 0.2f * (intTimesWatered - 1);
+
+        // Calculate Fertilizer Bonus
+        intNewFertilizerLimit = objPlant.getIntFertilizerLimit() + objTitle.getIntFertLimInc();
+        if (intTimesFertilized > intNewFertilizerLimit)
+            fltFertilizerBonus = fltHarvestTotal * 0.5f * intNewFertilizerLimit;
+        else
+            fltFertilizerBonus = fltHarvestTotal * 0.5f * intTimesFertilized;
+
+        // Get Crop Bonus for Flowers
+        if (objPlant.getIntCropType() == Plant.FLOWER)
+            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus) * 1.1f;
+        else
+            return (fltHarvestTotal + fltWaterBonus + fltFertilizerBonus);
     }
 
 

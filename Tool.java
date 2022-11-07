@@ -36,183 +36,124 @@ public class Tool {
     /* ----- ----- ----- Tool Methods ----- ----- ----- */
 
     /**
+     * canUseTool
+     * - This method checks if the Player can use the Tool.
+     *
+     * @param objTile Tile to use the tool on.
+     * @param fltObjectcoins Objectcoins the Player has.
+     *
+     * @return True if the Player can use the Tool, False otherwise.
+     */
+    public boolean canUseTool (Tile objTile,
+                               float fltObjectcoins) {
+
+        // If Player has not enough Objectcions to use Tool
+        if (fltObjectcoins < this.fltUseCost)
+            return false;
+
+        // Switch Tool
+        switch (this.strToolName) {
+
+            case "Watering Can":
+                // If tile has a Plant and hasn't been watered today
+                if (objTile.getIntStatus() == Tile.OCCUPIED &&
+                        objTile.isBoolWateredToday() == false) {
+
+                    return true;
+                }
+                break;
+
+            case "Plow":
+                // If Tile is Unplowed
+                if (objTile.getIntStatus() == Tile.UNPLOWED) {
+
+                    return true;
+                }
+                break;
+
+            case "Shovel":
+                // If Tile is Plowed, Occupied, Harvestable, or is Withered
+                if (objTile.getIntStatus() == Tile.OCCUPIED ||
+                        objTile.getIntStatus() == Tile.HARVESTABLE ||
+                        objTile.getIntStatus() == Tile.WITHERED) {
+
+                    return true;
+                }
+                break;
+
+            case "Pickaxe":
+                // If Tile has a Rock
+                if (objTile.getIntStatus() == Tile.ROCK) {
+
+                    return true;
+                }
+                break;
+
+            case "Fertilizer":
+                // If Tile is Plowed AND Player has Fertilizers
+                if (objTile.getIntStatus() == Tile.OCCUPIED &&
+                        objTile.isBoolFertilizedToday() == false) {
+
+                    return true;
+                }
+                break;
+        }
+
+        return false;
+    }
+
+    
+
+    /**
      * useTool
      * - This method is called when Player uses a tool.
      * 
      * @param objTile Tile to use the tool on.
-     * @param objPlayer Player using the tool.
-     *
-     * @return True if the Tool was used, False otherwise.
+     * @param objPlayer Farmer using the tool.
      */
-    public boolean useTool (Tile objTile,
-                            Farmer objPlayer) {
+    public void useTool (Tile objTile,
+                         Farmer objPlayer) {
 
-        boolean boolToolUsed = false;
-
-        // If Player has not enough Objectcions to use Tool
-        if (objPlayer.getFltObjectCoins() < this.fltUseCost)
-            return false;
+        // If can't use tool
+        if (!canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            return;
 
         // Switch Tool Method
         switch (strToolName) {
 
             case "Watering Can":
-                boolToolUsed = useWateringCan(objTile);
+                // Increase Tile Water Count
+                objTile.setIntTimesWatered(objTile.getIntTimesWatered() + 1);
+                objTile.setBoolWateredToday(true);
                 break;
 
             case "Plow":
-                boolToolUsed = usePlow(objTile);
+                // Plow Tile
+                objTile.setIntStatus(Tile.PLOWED);
                 break;
 
             case "Shovel":
-                boolToolUsed = useShovel(objTile);
+                // Reset Tile
+                objTile.resetTile(Tile.UNPLOWED);
                 break;
 
             case "Pickaxe":
-                boolToolUsed = usePickaxe(objTile);
+                // Set Tile to Unplowed
+                objTile.setIntStatus(Tile.UNPLOWED);
                 break;
 
             case "Fertilizer":
-                boolToolUsed = useFertilizer(objTile);
+                // Increase Tile Fertilize Count
+                objTile.setIntTimesFertilized(objTile.getIntTimesFertilized() + 1);
+                objTile.setBoolFertilizedToday(true);
                 break;
         }
 
-        // If Tool was successfully used
-        if (boolToolUsed) {
+        // Use Objectcoins
+        objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - this.fltUseCost);
 
-            // Use Objectcoins
-            objPlayer.setFltObjectCoins(objPlayer.getFltObjectCoins() - this.fltUseCost);
-
-            // Gain EXP
-            objPlayer.setFltEXP(objPlayer.getFltEXP() + this.fltEXPGain);
-        }
-
-        return boolToolUsed;
-    }
-
-
-    /**
-     * useWateringCan
-     * - This method is called when Player uses a Watering Can.
-     * 
-     * @param objTile Tile to use the Watering Can on.
-     *                
-     * @return True if the Watering Can was used, False otherwise.
-     */
-    private boolean useWateringCan (Tile objTile) {
-
-        // If tile has a Plant and hasn't been watered today
-        if (objTile.getIntStatus() == Tile.OCCUPIED &&
-                objTile.isBoolWateredToday() == false) {
-
-            // Water Tile
-            objTile.setIntTimesWatered(objTile.getIntTimesWatered() + 1);
-            objTile.setBoolWateredToday(true);
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * usePlow
-     * - This method is called when Player uses a Plow.
-     * 
-     * @param objTile Tile to use the Plow on.
-     *                
-     * @return True if the Plow was used, False otherwise.
-     */
-    private boolean usePlow (Tile objTile) {
-
-        // If Tile is Unplowed
-        if (objTile.getIntStatus() == Tile.UNPLOWED) {
-
-            // Plow Tile
-            objTile.setIntStatus(Tile.PLOWED);
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * useShovel
-     * - This method is called when Player uses a Shovel.
-     * 
-     * @param objTile Tile to use the Shovel on.
-     *                
-     * @return True if the Shovel was used, False otherwise.
-     */
-    private boolean useShovel (Tile objTile) {
-
-        // If Tile is Plowed, Occupied, Harvestable, or is Withered
-        if (objTile.getIntStatus() == Tile.UNPLOWED ||
-                objTile.getIntStatus() == Tile.OCCUPIED ||
-                objTile.getIntStatus() == Tile.HARVESTABLE ||
-                objTile.getIntStatus() == Tile.WITHERED) {
-
-            // Reset Tile
-            objTile.resetTile(Tile.UNPLOWED);
-        }
-
-        // Always true even if nothing happens
-        return true;
-    }
-
-
-
-    /**
-     * usePickaxe
-     * - This method is called when Player uses a Pickaxe.
-     * 
-     * @param objTile Tile to use the Pickaxe on.
-     *                
-     * @return True if the Pickaxe was used, False otherwise.
-     */
-    private boolean usePickaxe (Tile objTile) {
-
-        // If Tile has a Rock
-        if (objTile.getIntStatus() == Tile.ROCK) {
-
-            // Set Tile to Unplowed
-            objTile.setIntStatus(Tile.UNPLOWED);
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * useFertilizer
-     * - This method is called when Player uses a Fertilizer.
-     * 
-     * @param objTile Tile to use the Fertilizer on.
-     *                
-     * @return True if the Fertilizer was used, False otherwise.
-     */
-    private boolean useFertilizer (Tile objTile) {
-
-        // If Tile is Plowed AND Player has Fertilizers
-        if (objTile.getIntStatus() == Tile.OCCUPIED &&
-                objTile.isBoolFertilizedToday() == false) {
-
-            // Increase Tile Fertilize Count
-            objTile.setIntTimesFertilized(objTile.getIntTimesFertilized() + 1);
-            objTile.setBoolFertilizedToday(true);
-
-            return true;
-        }
-
-        return false;
+        // Gain EXP
+        objPlayer.setFltEXP(objPlayer.getFltEXP() + this.fltEXPGain);
     }
 
 
