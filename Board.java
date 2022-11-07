@@ -157,7 +157,7 @@ public class Board {
      *
      * @return intNumber Number that corresponds to the letter
      */
-    public static int convertLetterToNumber(char chrLetter) {
+    public int convertLetterToNumber(char chrLetter) {
 
         return (int) chrLetter - 65;
     }

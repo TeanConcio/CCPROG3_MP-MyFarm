@@ -118,7 +118,7 @@ public class Controller {
                             // If Tile can be Planted
                             if (objSelectedTile.getIntStatus() == Tile.PLOWED) {
                                 // Displays the shop
-                                objVisual.printShopItems(objFarmer, objShop);
+                                objVisual.displayShopItems(objFarmer, objShop);
                                 // Prompts the player to choose a seed to plant
                                 System.out.print("Which Seed Number? : ");
                                 strInput = input.nextLine();
@@ -162,11 +162,18 @@ public class Controller {
                         case "shovel":
                             // If Tile can be Shoveled
                             if (objFarmer.getObjShovel().canUseTool(objSelectedTile, objFarmer.getFltObjectCoins())) {
+
+                                System.out.print("Tile " + strTileName + " shoveled!");
+
+                                if (objSelectedTile.getIntStatus() == Tile.ROCK ||
+                                        objSelectedTile.getIntStatus() == Tile.UNPLOWED)
+                                    System.out.print(" But nothing happened");
+                                System.out.println();
+
                                 objFarmer.getObjShovel().useTool(objSelectedTile, objFarmer);
-                                System.out.println("Tile " + strTileName + " shoveled!");
                             }
                             else
-                                System.out.println ("Tile \" + strTileName + \" shoveled! But nothing happened");
+                                System.out.println ("There's a time and place for everything! But not now.");
                             break;
 
                         case "Harvest":
@@ -176,7 +183,7 @@ public class Controller {
                                 System.out.println(objSelectedTile.getObjPlant().getStrSeedName() + " harvested!");
                                 int intProductsProduced = objSelectedTile.getObjPlant().getProduceQuantity();
                                 System.out.println(objSelectedTile.getObjPlant().getStrSeedName() + " Produced: " + intProductsProduced);
-                                System.out.println("Profit: " + objSelectedTile.computeHarvestProfit(intProductsProduced, objFarmer.getObjCurrentTitle()));
+                                System.out.printf("Profit: %.2f\n", objSelectedTile.computeHarvestProfit(intProductsProduced, objFarmer.getObjCurrentTitle()));
                                 objFarmer.harvestCrop(objSelectedTile, intProductsProduced);
                             }
                             else

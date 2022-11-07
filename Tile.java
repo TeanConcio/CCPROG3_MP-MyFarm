@@ -15,9 +15,7 @@ public class Tile {
     private int intColCoord;
     private int intStatus;
     private int intTimesWatered;
-    private boolean boolWateredToday;
     private int intTimesFertilized;
-    private boolean boolFertilizedToday;
     private Plant objPlant;
     private int intPlantAge;
 
@@ -43,9 +41,7 @@ public class Tile {
         this.intColCoord = intColCoord;
         this.intStatus = intStatus;
         this.intTimesWatered = 0;
-        this.boolWateredToday = false;
         this.intTimesFertilized = 0;
-        this.boolFertilizedToday = false;
         this.objPlant = null;
         this.intPlantAge = 0;
     }
@@ -66,9 +62,7 @@ public class Tile {
 
         this.intStatus = intStatus;
         this.intTimesWatered = 0;
-        this.boolWateredToday = false;
         this.intTimesFertilized = 0;
-        this.boolFertilizedToday = false;
         this.objPlant = null;
         this.intPlantAge = 0;
     }
@@ -80,10 +74,6 @@ public class Tile {
      * - Updates the Tile's Plant related statuses for advancing days.
      */
     public void updateTile () {
-
-        // Reset Watered and Fertilized Today
-        boolWateredToday = false;
-        boolFertilizedToday = false;
 
         // If Tile has no Plant
         if (objPlant == null)
@@ -289,14 +279,8 @@ public class Tile {
     public int getIntTimesWatered() {return intTimesWatered;}
     public void setIntTimesWatered(int intTimesWatered) {this.intTimesWatered = intTimesWatered;}
 
-    public boolean isBoolWateredToday() {return boolWateredToday;}
-    public void setBoolWateredToday(boolean boolWateredToday) {this.boolWateredToday = boolWateredToday;}
-
     public int getIntTimesFertilized() {return intTimesFertilized;}
     public void setIntTimesFertilized(int intTimesFertilized) {this.intTimesFertilized = intTimesFertilized;}
-
-    public boolean isBoolFertilizedToday() {return boolFertilizedToday;}
-    public void setBoolFertilizedToday(boolean boolFertilizedToday) {this.boolFertilizedToday = boolFertilizedToday;}
 
     public Plant getObjPlant() {return objPlant;}
     public void setObjPlant(Plant objPlant) {this.objPlant = objPlant;}

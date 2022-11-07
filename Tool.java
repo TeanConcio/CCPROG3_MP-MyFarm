@@ -56,8 +56,7 @@ public class Tool {
 
             case "Watering Can":
                 // If tile has a Plant and hasn't been watered today
-                if (objTile.getIntStatus() == Tile.OCCUPIED &&
-                        objTile.isBoolWateredToday() == false) {
+                if (objTile.getIntStatus() == Tile.OCCUPIED) {
 
                     return true;
                 }
@@ -72,14 +71,7 @@ public class Tool {
                 break;
 
             case "Shovel":
-                // If Tile is Plowed, Occupied, Harvestable, or is Withered
-                if (objTile.getIntStatus() == Tile.OCCUPIED ||
-                        objTile.getIntStatus() == Tile.HARVESTABLE ||
-                        objTile.getIntStatus() == Tile.WITHERED) {
-
-                    return true;
-                }
-                break;
+                return true;
 
             case "Pickaxe":
                 // If Tile has a Rock
@@ -91,8 +83,7 @@ public class Tool {
 
             case "Fertilizer":
                 // If Tile is Plowed AND Player has Fertilizers
-                if (objTile.getIntStatus() == Tile.OCCUPIED &&
-                        objTile.isBoolFertilizedToday() == false) {
+                if (objTile.getIntStatus() == Tile.OCCUPIED) {
 
                     return true;
                 }
@@ -124,7 +115,6 @@ public class Tool {
             case "Watering Can":
                 // Increase Tile Water Count
                 objTile.setIntTimesWatered(objTile.getIntTimesWatered() + 1);
-                objTile.setBoolWateredToday(true);
                 break;
 
             case "Plow":
@@ -133,8 +123,10 @@ public class Tool {
                 break;
 
             case "Shovel":
-                // Reset Tile
-                objTile.resetTile(Tile.UNPLOWED);
+                if (objTile.getIntStatus() != Tile.ROCK &&
+                        objTile.getIntStatus() != Tile.UNPLOWED)
+                    // Reset Tile
+                    objTile.resetTile(Tile.UNPLOWED);
                 break;
 
             case "Pickaxe":
@@ -145,7 +137,6 @@ public class Tool {
             case "Fertilizer":
                 // Increase Tile Fertilize Count
                 objTile.setIntTimesFertilized(objTile.getIntTimesFertilized() + 1);
-                objTile.setBoolFertilizedToday(true);
                 break;
         }
 

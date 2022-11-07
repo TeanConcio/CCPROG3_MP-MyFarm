@@ -11,7 +11,7 @@ public class Visual {
         System.out.println("Farmer Stats:");
         System.out.printf("Lv %d (EXP: %.1f)\n", (int) (objPlayer.getFltEXP() / 100), objPlayer.getFltEXP());
         System.out.println("Title: " + objPlayer.getObjCurrentTitle().getStrFarmerTitle());
-        System.out.println(objPlayer.getFltObjectCoins() + " Object Coins");
+        System.out.printf("%.2f Object Coins\n", objPlayer.getFltObjectCoins());
     }
 
     /**
@@ -51,9 +51,9 @@ public class Visual {
 
         System.out.println("Next Title: " + objNextTitle.getStrFarmerTitle());
         System.out.println("\tLevel Requirement: " + (int)(objNextTitle.getFltEXPReq() / 100));
-        System.out.println("\tRegistration Fee: " + objNextTitle.getFltRegistrationFee());
-        System.out.println("\tSeed Discount: " + objNextTitle.getFltSeedDiscount());
-        System.out.println("\tEarning Bonus: " + objNextTitle.getFltEarningBonus());
+        System.out.printf("\tRegistration Fee: %.2f\n", objNextTitle.getFltRegistrationFee());
+        System.out.printf("\tSeed Discount: %.2f\n", objNextTitle.getFltSeedDiscount());
+        System.out.printf("\tEarning Bonus: %.2f\n", objNextTitle.getFltEarningBonus());
     }
 
     /**
@@ -81,8 +81,6 @@ public class Visual {
                               (objTile.getObjPlant().getIntHarvestTime() - objTile.getIntPlantAge()));
             System.out.println("\tWatered " + objTile.getIntTimesWatered() + " times");
             System.out.println("\tFertilized " + objTile.getIntTimesFertilized() + " times");
-            System.out.println("\tWatered Today? " + objTile.isBoolWateredToday());
-            System.out.println("\tFertilized Today? " + objTile.isBoolFertilizedToday());
         }
 
         System.out.println();
@@ -114,40 +112,41 @@ public class Visual {
 
         // If can use Pickaxe on Tile
         if (objPlayer.getObjPickaxe().canUseTool(objTile, objPlayer.getFltObjectCoins()))
-            System.out.println("Pickaxe - " + objPlayer.getObjPickaxe().getFltUseCost() + " Object Coins");
+            System.out.println("\tPickaxe - " + objPlayer.getObjPickaxe().getFltUseCost() + " Object Coins");
 
         // If Tile can be Plowed
         if (objPlayer.getObjPlow().canUseTool(objTile, objPlayer.getFltObjectCoins()))
-            System.out.println("Plow");
+            System.out.println("\tPlow");
 
         // If Tile can be Planted
         if (objTile.getIntStatus() == Tile.PLOWED)
-            System.out.println("Plant");
+            System.out.println("\tPlant");
 
         // If Tile can be Watered
         if (objPlayer.getObjWateringCan().canUseTool(objTile, objPlayer.getFltObjectCoins()))
-            System.out.println("Water");
+            System.out.println("\tWater");
 
         // If Tile can be Fertilized
         if (objPlayer.getObjFertilizer().canUseTool(objTile, objPlayer.getFltObjectCoins()))
-            System.out.println("Fertilize - " + objPlayer.getObjFertilizer().getFltUseCost() + " Object Coins");
+            System.out.println("\tFertilize - " + objPlayer.getObjFertilizer().getFltUseCost() + " Object Coins");
 
         // If Tile is Harvestable
         if (objTile.getIntStatus() == Tile.HARVESTABLE)
-            System.out.println("Harvest");
+            System.out.println("\tHarvest");
 
         // If can use Shovel on Tile
-        System.out.println("Shovel - " + objPlayer.getObjShovel().getFltUseCost() + " Object Coins");
+        if (objPlayer.getObjShovel().canUseTool(objTile, objPlayer.getFltObjectCoins()))
+            System.out.println("\tShovel - " + objPlayer.getObjShovel().getFltUseCost() + " Object Coins");
     }
 
     /**
-     * printShopItems
+     * displayShopItems
      * - This method prints all available seeds to plant
      *
      * @param objShop The list of all available seeds.
      */
-    public void printShopItems(Farmer objPlayer,
-                               Shop objShop) {
+    public void displayShopItems(Farmer objPlayer,
+                                 Shop objShop) {
 
         System.out.printf("\nAvailable Seeds :\n");
 
