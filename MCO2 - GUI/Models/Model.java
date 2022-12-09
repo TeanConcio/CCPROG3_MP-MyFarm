@@ -54,7 +54,7 @@ public class Model {
             return true;
 
 
-        // If doesn't have live tiles and doesn't have money to use a Shovel
+            // If doesn't have live tiles and doesn't have money to use a Shovel
         else if (!this.objBoard.hasLiveTiles() &&
                 this.objFarmer.getFltObjectCoins() < this.objFarmer.getObjShovel().getFltUseCost()) {
             return true;

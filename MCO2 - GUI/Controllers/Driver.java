@@ -11,6 +11,6 @@ public class Driver {
 
             Model objModel = new Model();
 
-            Controller objController = new Controller(objModel, objGUI);
+            Controller objController = new Controller(objGUI, objModel);
     }
 }
