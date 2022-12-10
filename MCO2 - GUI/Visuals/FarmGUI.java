@@ -232,7 +232,7 @@ public class FarmGUI extends JFrame {
                 JPanel panelWestBotTop = new JPanel(); {
                     panelWestBotTop.setLayout(new GridBagLayout());
 
-                    Font fntFont = new Font ("Comic Sans MS", Font.BOLD, 15);
+                    Font fntFont = new Font ("Comic Sans MS", Font.BOLD, 12);
 
                     lblTileStatus.setFont (fntFont);
                     lblTilePlant.setFont (fntFont);
@@ -282,9 +282,10 @@ public class FarmGUI extends JFrame {
             // Make JTextArea wrap text
             // Default: false
             this.taLog.setLineWrap(true);
-            this.taLog.setEditable(false);
+            //this.taLog.setEditable(false);
             this.taLog.setForeground(Color.WHITE);
             this.taLog.setBackground(Color.BLACK);
+            this.taLog.setPreferredSize(new Dimension(300,50));
 
             // Create a JScrollPane and add JTextArea to make it scrollable
             JScrollPane scrollPane = new JScrollPane(this.taLog);
@@ -294,6 +295,7 @@ public class FarmGUI extends JFrame {
             scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+            panelSouthWest.add(scrollPane);
             panelSouthWest.add(this.taLog);
         }
 
