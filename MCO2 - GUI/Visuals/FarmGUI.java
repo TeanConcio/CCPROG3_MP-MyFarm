@@ -429,40 +429,27 @@ public class FarmGUI extends JFrame {
 
 
     public void makeGameOverPanel () {
+        if (this.boolGameOver) {
+            // Remove All Components from the JFrame
+            this.getContentPane().removeAll();
 
-        if (!this.boolGameOver)
-            return;
+            // Create a JPanel
+            JPanel panelGameOver = new JPanel();
+            panelGameOver.setLayout(new GridBagLayout());
 
-
-        // Remove All Components from the JFrame
-        this.getContentPane().removeAll();
-
-        // Create a JPanel
-        JPanel panelGameOver = new JPanel();
-
-        // Explicitly set the Layout
-        panelGameOver.getSize(new Dimension(1200, 700));
-        panelGameOver.setBackground(Color.GRAY);
-
-
-
-        // Create a JPanel for the Game Over Text
-        JPanel panelGameOverText = new JPanel(); {
-            panelGameOverText.setBackground(Color.GRAY);
-            panelGameOverText.setLayout(new GridBagLayout());
-            panelGameOverText.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+            // Explicitly set the Layout
+            panelGameOver.getSize(new Dimension(1200, 700));
+            panelGameOver.setBackground(Color.GRAY);
 
             JLabel lblGameOver = new JLabel("Game Over");
             lblGameOver.setFont(new Font("Comic Sans MS", Font.BOLD, 100));
-            lblGameOver.setForeground(Color.WHITE);
+            lblGameOver.setForeground(Color.BLACK);
 
-            panelGameOverText.add(lblGameOver);
+            panelGameOver.add(lblGameOver);
+
+            // Add the Game Over Panel to the JFrame
+            this.add(panelGameOver);
         }
-
-
-        // Add the Game Over Panel to the JFrame
-        this.add(panelGameOver);
-        this.setEnabled(false);
     }
 
 
