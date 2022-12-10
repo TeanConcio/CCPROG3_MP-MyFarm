@@ -25,14 +25,14 @@ public class ShopGUI extends JFrame {
     // JButtons
 
         // Plants
-    private JButton btnTurnip = new JButton("Turnip");
-    private JButton btnCarrot = new JButton("Carrot");
-    private JButton btnPotato = new JButton("Potato");
-    private JButton btnRose = new JButton("Rose");
-    private JButton btnTulip = new JButton("Tulip");
-    private JButton btnSunflower = new JButton("Sunflower");
-    private JButton btnMango = new JButton("Mango");
-    private JButton btnApple = new JButton("Apple");
+    private JButton btnTurnip = new JButton(new ImageIcon(getClass().getResource("Assets/Turnip.png")));
+    private JButton btnCarrot = new JButton(new ImageIcon(getClass().getResource("Assets/Carrot.png")));
+    private JButton btnPotato = new JButton(new ImageIcon(getClass().getResource("Assets/Potato.png")));
+    private JButton btnRose = new JButton(new ImageIcon(getClass().getResource("Assets/Rose.png")));
+    private JButton btnTulip = new JButton(new ImageIcon(getClass().getResource("Assets/Tulip.png")));
+    private JButton btnSunflower = new JButton(new ImageIcon(getClass().getResource("Assets/Sunflower.png")));
+    private JButton btnMango = new JButton(new ImageIcon(getClass().getResource("Assets/Mango.png")));
+    private JButton btnApple = new JButton(new ImageIcon(getClass().getResource("Assets/Apple.png")));
 
         // Actions
     private JButton btnPlant = new JButton("Plant");
@@ -56,7 +56,7 @@ public class ShopGUI extends JFrame {
         setResizable(false);
 
         // Set the default close operation
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the Layout
         setLayout(new BorderLayout());
@@ -158,10 +158,18 @@ public class ShopGUI extends JFrame {
             }
             JPanel panelCenterNorthCenter = new JPanel(); {
                 panelCenterNorthCenter.setLayout(new GridBagLayout());
-                                panelCenterNorthCenter.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+                panelCenterNorthCenter.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
                 JPanel panelCenterNorthCenterCenter = new JPanel(); {
                     panelCenterNorthCenterCenter.setPreferredSize(new Dimension(150,150));
                     panelCenterNorthCenterCenter.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,Color.ORANGE,Color.YELLOW));
+
+                    // displays selectedpl plant icons
+                    if (!this.lblCropType.getText().equals("")) {
+                        JLabel lblIcon = new JLabel ();
+                        lblIcon.setIcon(new ImageIcon(getClass().getResource("Assets/" + this.lblSeedName.getText() + ".png")));
+                        panelCenterNorthCenterCenter.add (lblIcon);
+                    }
                 }
                 panelCenterNorthCenter.add(panelCenterNorthCenterCenter);
             }
@@ -286,6 +294,19 @@ public class ShopGUI extends JFrame {
 
 
     /* ----- ----- ----- GUI-element Setting Methods ----- ----- ----- */
+
+    public void setActionCommands() {
+
+        // Plant
+        this.btnTurnip.setActionCommand("Turnip");
+        this.btnCarrot.setActionCommand("Carrot");
+        this.btnPotato.setActionCommand("Potato");
+        this.btnRose.setActionCommand("Rose");
+        this.btnTulip.setActionCommand("Tulip");
+        this.btnSunflower.setActionCommand("Sunflower");
+        this.btnMango.setActionCommand("Mango");
+        this.btnApple.setActionCommand("Apple");
+    }
 
     public void setActionListener (ActionListener listener) {
 

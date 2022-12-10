@@ -13,44 +13,47 @@ public class FarmGUI extends JFrame {
     int intRows;
     int intCols;
 
+    boolean boolGameOver = false;
+
 
     // JPanels
 
-        // Farmer Information
+    // Farmer Information
     private JLabel lblFarmerName = new JLabel("");
     private JLabel lblFarmerLevel = new JLabel("");
     private JLabel lblObjectCoins = new JLabel("");
     private JLabel lblFarmerTitle = new JLabel("");
 
-        // Day Number
+    // Day Number
     private JLabel lblDayNum = new JLabel("");
 
-        // Tile Details
+    // Tile Details
     private JLabel lblTileStatus = new JLabel("");
     private JLabel lblTilePlant = new JLabel("");
     private JLabel lblTilePlantAge = new JLabel("");
     private JLabel lblTimesWatered = new JLabel("");
     private JLabel lblTimesFertilized = new JLabel("");
 
+    // Assets
 
     // JButtons
 
-        // Crop Grid
+    // Crop Grid
     private JButton[][] arrbtnCrops;
 
-        // Farmer Actions
+    // Farmer Actions
     private JButton btnRegister = new JButton("Register");
 
-        // Tile Actions
-    private JButton btnPlow = new JButton("Plow");
-    private JButton btnWater = new JButton("Water");
-    private JButton btnFertilize = new JButton("Fertilize");
-    private JButton btnPickaxe = new JButton("Pickaxe");
-    private JButton btnShovel = new JButton("Shovel");
-    private JButton btnPlant = new JButton("Plant");
-    private JButton btnHarvest = new JButton("Harvest");
+    // Tile Actions
+    private JButton btnPlow = new JButton(new ImageIcon(getClass().getResource("Assets/Hoe.png")));
+    private JButton btnWater = new JButton(new ImageIcon(getClass().getResource("Assets/WateringCan.png")));
+    private JButton btnFertilize = new JButton(new ImageIcon(getClass().getResource("Assets/Fertilizer.png")));
+    private JButton btnPickaxe = new JButton(new ImageIcon(getClass().getResource("Assets/Pickaxe.png")));
+    private JButton btnShovel = new JButton(new ImageIcon(getClass().getResource("Assets/Shovel.png")));
+    private JButton btnPlant = new JButton(new ImageIcon(getClass().getResource("Assets/Plant.png")));
+    private JButton btnHarvest = new JButton(new ImageIcon(getClass().getResource("Assets/Harvest.png")));
 
-        // Advance Day
+    // Advance Day
     private JButton btnProceedDay = new JButton("Proceed Day");
 
 
@@ -59,6 +62,7 @@ public class FarmGUI extends JFrame {
 
 
     // Text
+    private String strLog = "";
     private int intProduceProduced;
     private float fltHarvestProfit;
 
@@ -105,7 +109,7 @@ public class FarmGUI extends JFrame {
 
                 // Create a new JButton
                 this.arrbtnCrops[i][j] = new JButton("");
-                this.arrbtnCrops[i][j].setActionCommand(i + " " + j);
+                this.arrbtnCrops[i][j].setActionCommand(i + ", " + j);
             }
         }
 
@@ -117,6 +121,7 @@ public class FarmGUI extends JFrame {
         this.makeSouthPanel();
         this.makeEastPanel();
         this.makeWestPanel();
+        this.makeGameOverPanel();
 
 
         /* ----- Set Visibility to True in the end ----- */
@@ -148,7 +153,6 @@ public class FarmGUI extends JFrame {
 
                 // Set the background color
                 this.arrbtnCrops[i][j].setBackground(Color.decode("#af7b50"));
-
                 // Add the JButton to the JPanel
                 panelCenter.add(this.arrbtnCrops[i][j]);
             }
@@ -159,10 +163,15 @@ public class FarmGUI extends JFrame {
     }
 
     public void makeEastPanel() {
+        // Initialize dimensions
         int intDim = 55;
         int intGutter = 2;
-        JPanel panelEast = new JPanel();
 
+        // Initialize Main East Panel
+        JPanel panelEast = new JPanel();
+        panelEast.setBackground(Color.GREEN);
+
+        // Set Size for action buttons
         btnPlow.setPreferredSize(new Dimension (intDim, intDim));
         btnWater.setPreferredSize(new Dimension (intDim, intDim));
         btnFertilize.setPreferredSize(new Dimension (intDim, intDim));
@@ -171,8 +180,10 @@ public class FarmGUI extends JFrame {
         btnPlant.setPreferredSize(new Dimension (intDim, intDim));
         btnHarvest.setPreferredSize(new Dimension (intDim, intDim));
 
+        // Set East Panel Layout into (7, 0) grid
         panelEast.setLayout(new GridLayout(7,0));
 
+        // Initialize Button Frames
         JPanel panelOne = new JPanel();
         JPanel panelTwo = new JPanel();
         JPanel panelThree = new JPanel();
@@ -189,6 +200,7 @@ public class FarmGUI extends JFrame {
         panelSix.setBorder(BorderFactory.createEmptyBorder(intGutter,intGutter,intGutter,intGutter));
         panelSeven.setBorder(BorderFactory.createEmptyBorder(intGutter,intGutter,intGutter,intGutter));
 
+        // Add Buttons into button frames
         panelOne.add(btnPlow);
         panelTwo.add(btnWater);
         panelThree.add(btnFertilize);
@@ -197,6 +209,7 @@ public class FarmGUI extends JFrame {
         panelSix.add(btnPlant);
         panelSeven.add(btnHarvest);
 
+        // Add frames into main panel
         panelEast.add(panelOne);
         panelEast.add(panelTwo);
         panelEast.add(panelThree);
@@ -205,63 +218,71 @@ public class FarmGUI extends JFrame {
         panelEast.add(panelSix);
         panelEast.add(panelSeven);
 
+        // add main panel
         add(panelEast, BorderLayout.EAST);
     }
 
     public void makeWestPanel() {
-            JPanel panelWest = new JPanel();
-            panelWest.setLayout(new GridLayout(2,0));
+        // initialize main west panel
+        JPanel panelWest = new JPanel();
+        panelWest.setLayout(new GridLayout(2,0));
 
-            JPanel panelWestTop = new JPanel(); {
-                panelWestTop.setLayout(new GridBagLayout());
-                panelWestTop.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-                panelWestTop.setBackground(Color.GRAY);
+        // initialize top panel
+        JPanel panelWestTop = new JPanel(); {
+            panelWestTop.setLayout(new GridBagLayout());
+            panelWestTop.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            panelWestTop.setBackground(Color.GRAY);
 
-                JPanel panelWestTopMid = new JPanel(); {
-                    panelWestTopMid.setBackground(Color.decode("#af7b50"));
-                    panelWestTopMid.setPreferredSize(new Dimension (150, 150));
-                    panelWestTopMid.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.black, Color.black));
-                }
+            //initialize top frame panel
+            JPanel panelWestTopMid = new JPanel(); {
+                panelWestTopMid.setBackground(Color.decode("#af7b50"));
+                panelWestTopMid.setPreferredSize(new Dimension (150, 150));
+                panelWestTopMid.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.black, Color.black));
 
-                panelWestTop.add(panelWestTopMid);
             }
 
-            JPanel panelWestBot = new JPanel(); {
-                panelWestBot.setLayout(new BorderLayout());
-
-                JPanel panelWestBotTop = new JPanel(); {
-                    panelWestBotTop.setLayout(new GridBagLayout());
-
-                    Font fntFont = new Font ("Comic Sans MS", Font.BOLD, 12);
-
-                    lblTileStatus.setFont (fntFont);
-                    lblTilePlant.setFont (fntFont);
-                    lblTilePlantAge.setFont (fntFont);
-                    lblTimesWatered.setFont (fntFont);
-                    lblTimesFertilized.setFont (fntFont);
-
-                    GridBagConstraints gbcConstraints = new GridBagConstraints();
-                    gbcConstraints.fill = GridBagConstraints.VERTICAL;
-
-                    gbcConstraints.gridy = 1;
-                    panelWestBotTop.add(lblTileStatus,gbcConstraints);
-                    gbcConstraints.gridy = 2;
-                    panelWestBotTop.add(lblTilePlant,gbcConstraints);
-                    gbcConstraints.gridy = 3;
-                    panelWestBotTop.add(lblTilePlantAge,gbcConstraints);
-                    gbcConstraints.gridy = 4;
-                    panelWestBotTop.add(lblTimesWatered,gbcConstraints);
-                    gbcConstraints.gridy = 5;
-                    panelWestBotTop.add(lblTimesFertilized,gbcConstraints);
-                }
-
-                panelWestBot.add(panelWestBotTop, BorderLayout.NORTH);
-            }
-
-            panelWest.add(panelWestTop);
-            panelWest.add(panelWestBot);
-            add(panelWest, BorderLayout.WEST);
+            panelWestTop.add(panelWestTopMid);
         }
+
+        // initialize bottom panel
+        JPanel panelWestBot = new JPanel(); {
+            panelWestBot.setLayout(new BorderLayout());
+            panelWestBot.setBackground(Color.GREEN);
+
+            JPanel panelWestBotTop = new JPanel(); {
+                panelWestBotTop.setLayout(new GridBagLayout());
+                panelWestBotTop.setBackground(Color.GREEN);
+
+                Font fntFont = new Font ("Comic Sans MS", Font.BOLD, 12);
+
+                lblTileStatus.setFont (fntFont);
+                lblTilePlant.setFont (fntFont);
+                lblTilePlantAge.setFont (fntFont);
+                lblTimesWatered.setFont (fntFont);
+                lblTimesFertilized.setFont (fntFont);
+
+                GridBagConstraints gbcConstraints = new GridBagConstraints();
+                gbcConstraints.fill = GridBagConstraints.VERTICAL;
+
+                gbcConstraints.gridy = 1;
+                panelWestBotTop.add(lblTileStatus,gbcConstraints);
+                gbcConstraints.gridy = 2;
+                panelWestBotTop.add(lblTilePlant,gbcConstraints);
+                gbcConstraints.gridy = 3;
+                panelWestBotTop.add(lblTilePlantAge,gbcConstraints);
+                gbcConstraints.gridy = 4;
+                panelWestBotTop.add(lblTimesWatered,gbcConstraints);
+                gbcConstraints.gridy = 5;
+                panelWestBotTop.add(lblTimesFertilized,gbcConstraints);
+            }
+
+            panelWestBot.add(panelWestBotTop, BorderLayout.NORTH);
+        }
+
+        panelWest.add(panelWestTop);
+        panelWest.add(panelWestBot);
+        add(panelWest, BorderLayout.WEST);
+    }
 
     public void makeSouthPanel() {
         JPanel panelSouth = new JPanel();
@@ -271,9 +292,9 @@ public class FarmGUI extends JFrame {
 
         // Create a JPanel for the Farmer Info
         JPanel panelSouthWest = new JPanel(); {
-        //panelNorthWest.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.yellow, Color.black));
+            //panelNorthWest.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.yellow, Color.black));
             panelSouthWest.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-            panelSouthWest.setBackground(Color.RED);
+            panelSouthWest.setBackground(Color.decode("#af7b50"));
             panelSouthWest.setLayout(new FlowLayout());
 
             /* ----- Make Scrollable TextArea "Description" ----- */
@@ -281,11 +302,11 @@ public class FarmGUI extends JFrame {
             // Initialize the "Description" JTextArea
             // Make JTextArea wrap text
             // Default: false
+            this.taLog.setText("");
             this.taLog.setLineWrap(true);
-            //this.taLog.setEditable(false);
+            this.taLog.setEditable(false);
             this.taLog.setForeground(Color.WHITE);
             this.taLog.setBackground(Color.BLACK);
-            this.taLog.setPreferredSize(new Dimension(300,50));
 
             // Create a JScrollPane and add JTextArea to make it scrollable
             JScrollPane scrollPane = new JScrollPane(this.taLog);
@@ -296,14 +317,13 @@ public class FarmGUI extends JFrame {
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
             panelSouthWest.add(scrollPane);
-            panelSouthWest.add(this.taLog);
         }
 
         // Create a JPanel for the Day Number
         JPanel panelSouthCenter = new JPanel(); {
             //panelNorthWest.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.yellow, Color.black));
             //panelNorthCenter.setBorder(BorderFactory.createEmptyBorder(1,200,50,1));
-            panelSouthCenter.setBackground(Color.GRAY);
+            panelSouthCenter.setBackground(Color.GREEN);
             panelSouthCenter.setLayout(new GridBagLayout());
 
             btnProceedDay.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
@@ -330,7 +350,7 @@ public class FarmGUI extends JFrame {
         // Create a JPanel for the Farmer Info
         JPanel panelNorthWest = new JPanel(); {
             panelNorthWest.setPreferredSize(new Dimension(900,100));
-            panelNorthWest.setBackground(Color.RED);
+            panelNorthWest.setBackground(Color.decode("#af7b50"));
             panelNorthWest.setLayout(new BorderLayout());
 
             JPanel panelNorthWestWest = new JPanel(); {
@@ -341,6 +361,9 @@ public class FarmGUI extends JFrame {
                 JPanel panelNorthWestWestMid = new JPanel(); {
                     panelNorthWestWestMid.setPreferredSize(new Dimension (99,99));
                     panelNorthWestWestMid.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,Color.ORANGE,Color.PINK));
+                    JLabel lblIcon = new JLabel();
+                    lblIcon.setIcon(new ImageIcon(getClass().getResource("Assets/Farmer.png")));
+                    panelNorthWestWestMid.add(lblIcon);
                 }
 
                 panelNorthWestWest.add(panelNorthWestWestMid);
@@ -349,7 +372,7 @@ public class FarmGUI extends JFrame {
             JPanel panelNorthWestCenter = new JPanel(); {
                 panelNorthWestCenter.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
                 panelNorthWestCenter.setLayout(new BoxLayout(panelNorthWestCenter, BoxLayout.Y_AXIS));
-                panelNorthWestCenter.setBackground(Color.RED);
+                panelNorthWestCenter.setBackground(Color.decode("#af7b50"));
 
                 this.lblFarmerName.setForeground(Color.WHITE);
                 this.lblFarmerName.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
@@ -369,7 +392,7 @@ public class FarmGUI extends JFrame {
 
             JPanel panelNorthWestEast = new JPanel();
             {
-                panelNorthWestEast.setBackground(Color.red);
+                panelNorthWestEast.setBackground(Color.decode("#af7b50"));
                 panelNorthWestEast.setBorder(BorderFactory.createEmptyBorder(70,5,5,10));
                 panelNorthWestEast.setLayout(new BoxLayout(panelNorthWestEast, BoxLayout.Y_AXIS));
                 btnRegister.setPreferredSize(new Dimension (100,10));
@@ -404,6 +427,48 @@ public class FarmGUI extends JFrame {
     }
 
 
+
+    public void makeGameOverPanel () {
+
+        if (!this.boolGameOver)
+            return;
+
+
+        // Remove All Components from the JFrame
+        this.getContentPane().removeAll();
+
+        // Create a JPanel
+        JPanel panelGameOver = new JPanel();
+
+        // Explicitly set the Layout
+        panelGameOver.getSize(new Dimension(1200, 700));
+        panelGameOver.setBackground(Color.GRAY);
+
+
+
+        // Create a JPanel for the Game Over Text
+        JPanel panelGameOverText = new JPanel(); {
+            panelGameOverText.setBackground(Color.GRAY);
+            panelGameOverText.setLayout(new GridBagLayout());
+            panelGameOverText.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+
+            JLabel lblGameOver = new JLabel("Game Over");
+            lblGameOver.setFont(new Font("Comic Sans MS", Font.BOLD, 100));
+            lblGameOver.setForeground(Color.WHITE);
+
+            panelGameOverText.add(lblGameOver);
+        }
+
+
+        // Add the Game Over Panel to the JFrame
+        this.add(panelGameOver);
+        this.setEnabled(false);
+    }
+
+
+
+
+
     /* ----- ----- ----- GUI-element Setting Methods ----- ----- ----- */
 
 
@@ -412,7 +477,7 @@ public class FarmGUI extends JFrame {
 
     public void setFarmerName(String strFarmerName) {
 
-        this.lblFarmerName.setText("Farmer Name" + strFarmerName);
+        this.lblFarmerName.setText("Farmer Name: " + strFarmerName);
     }
 
     public void setFarmerLevelEXP(float fltFarmerEXP) {
@@ -445,10 +510,17 @@ public class FarmGUI extends JFrame {
 
     public void setTileButtons(int intXIndex,
                                int intYIndex,
-                               String strTileStatus) {
+                               ImageIcon imgIcon) {
 
-        this.arrbtnCrops[intXIndex][intYIndex].setText(strTileStatus);
+        this.arrbtnCrops[intXIndex][intYIndex].setIcon(imgIcon);
     }
+
+//    public void setTileButtons(int intXIndex,
+//                               int intYIndex,
+//                               String strTileStatus) {
+//
+//        this.arrbtnCrops[intXIndex][intYIndex].setText(strTileStatus);
+//    }
 
 
 
@@ -502,29 +574,53 @@ public class FarmGUI extends JFrame {
 
 
 
+    /* ----- ----- Log ----- ----- */
+    public void setTaLog() {
+
+        this.taLog.setText(this.strLog);
+    }
+
+
+
 
 
     /* ----- ----- ----- GUI-element Setting Methods ----- ----- ----- */
+
+    public void setActionCommands() {
+
+        // Tile Actions
+        this.btnPlow.setActionCommand("Plow");
+        this.btnWater.setActionCommand("Water");
+        this.btnFertilize.setActionCommand("Fertilize");
+        this.btnPickaxe.setActionCommand("Pickaxe");
+        this.btnShovel.setActionCommand("Shovel");
+        this.btnPlant.setActionCommand("Plant");
+        this.btnHarvest.setActionCommand("Harvest");
+
+        // Advance Day
+        this.btnProceedDay.setActionCommand("Proceed Day");
+    }
 
     public void setActionListener (ActionListener listener) {
 
         // Add an ActionListener to each JButton
 
-            // Register
+        // Register
         this.btnRegister.addActionListener(listener);
 
-            // Tile Actions
+        // Tile Actions
         this.btnPlow.addActionListener(listener);
         this.btnWater.addActionListener(listener);
         this.btnFertilize.addActionListener(listener);
         this.btnPickaxe.addActionListener(listener);
         this.btnShovel.addActionListener(listener);
         this.btnPlant.addActionListener(listener);
+        this.btnHarvest.addActionListener(listener);
 
-            // Proceed Day
+        // Proceed Day
         this.btnProceedDay.addActionListener(listener);
 
-            // Crop Grid
+        // Crop Grid
         for (int i = 0; i < this.intRows; i++) {
 
             for (int j = 0; j < this.intCols; j++) {
@@ -584,7 +680,7 @@ public class FarmGUI extends JFrame {
 
     public void setHarvestEnabled(boolean boolEnabled) {
 
-    	this.btnHarvest.setEnabled(boolEnabled);
+        this.btnHarvest.setEnabled(boolEnabled);
     }
 
 
@@ -601,6 +697,34 @@ public class FarmGUI extends JFrame {
 
 
     /* ----- ----- ----- Getters and Setters ----- ----- ----- */
+
+    public void addLogHarvestProfit(int intProduceProduced,
+                                    String strProduceName,
+                                    float fltHarvestProfit,
+                                    int intXIndex,
+                                    int intYIndex) {
+
+        this.strLog = this.strLog.concat(this.lblDayNum.getText() + " : "
+                + intProduceProduced + " " + strProduceName + "  was Harvested for "
+                + fltHarvestProfit + " Objectcoins (Tile " + intXIndex + ", "
+                + intYIndex + ")\n");
+    }
+
+    public void addLogHarvestable(int intXIndex,
+                                  int intYIndex) {
+
+        this.strLog = this.strLog.concat(this.lblDayNum.getText() + " : "
+                + "Tile " + intXIndex + ", " + intYIndex + " is Harvestable\n");
+    }
+
+    public void addLogWithered(int intXIndex,
+                               int intYIndex) {
+
+        this.strLog = this.strLog.concat(this.lblDayNum.getText() + " : "
+                + "Tile " + intXIndex + ", " + intYIndex + " Withered\n");
+    }
+
+    public void setBoolGameOver(boolean boolGameOver) {this.boolGameOver = boolGameOver;}
 
     public void setIntProduceProduced(int intProduceProduced) {this.intProduceProduced = intProduceProduced;}
 
