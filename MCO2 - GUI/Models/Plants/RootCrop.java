@@ -43,5 +43,7 @@ public class RootCrop extends Plant {
                 fltBaseSeedCost,
                 fltBaseProducePrice,
                 fltHarvestEXP);
+        
+        this.strCropType = "Root Crop";
     }
 }

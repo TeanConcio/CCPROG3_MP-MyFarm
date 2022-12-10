@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 public class Board {
 
-    public final static int ROW = 10;
-    public final static int COLUMN = 5;
+    public final static int ROW = 5;
+    public final static int COLUMN = 10;
     public final static int MIN_ROCKS = 10;
     public final static int MAX_ROCKS = 30;
 
@@ -46,35 +46,35 @@ public class Board {
                         arrobjTile[i][j] = new Tile(i, j, Tile.ROCK);
                         intRockCount++;
                     }
-
+                    
                     // If there are more rocks than maximum rocks then add an unplowed tile
                     else if (intRockCount >= MAX_ROCKS) {
                         arrobjTile[i][j] = new Tile(i, j, Tile.UNPLOWED);
                     }
-
+                    
                     // If the file has a 1, then it is a Rock
                     else if (reader.nextInt() == 1) {
                         arrobjTile[i][j] = new Tile(i, j, Tile.ROCK);
                         intRockCount++;
                     }
-
+                    
                     // If the file has a 0, then it is Unplowed
                     else {
                         arrobjTile[i][j] = new Tile(i, j, Tile.UNPLOWED);
                     }
-                }
+                }              
             }
-
+            
             // Clock Reader
             reader.close();
         }
-
+        
         // No File Found
         catch (FileNotFoundException e){
 
             // For each Row and Column
             for (int i = 0; i < ROW; i++) {
-
+            
                 for (int j = 0; j < COLUMN; j++) {
 
                     // Initialize Model.Tile to Unplowed
@@ -94,16 +94,14 @@ public class Board {
      * getTileFromCoords
      * - Returns the Model.Tile at the given chess coordinates.
      *
-     * @param strCoordinates String of Chess Coordinates.
+     * @param intXIndex String of Chess Coordinates.
+     * @param intYIndex String of Chess Coordinates.
      *
      * @return Model.Tile at the given chess coordinates.
      */
-    public Tile getTileFromCoords (String strCoordinates) {
+    public Tile getTileFromCoords (int intXIndex, int intYIndex) {
 
-        int intCol = convertLetterToNumber(strCoordinates.charAt(0));
-        int intRow = Integer.parseInt(strCoordinates.substring(1, strCoordinates.length())) - 1;
-
-        return arrobjTile[intRow][intCol];
+        return arrobjTile[intXIndex][intYIndex];
     }
 
 
@@ -128,41 +126,47 @@ public class Board {
 
 
     /**
-     * hasLiveTiles
-     * - Checks if there are any usable tiles on the board.
+     * hasEmptyTiles
+     * - Checks if there are any Plowed or Unplowed tiles on the board.
      *
      * @return True if there are usable tiles, false otherwise.
      */
-    public boolean hasLiveTiles () {
+    public boolean hasEmptyTiles() {
 
         for (int i = 0; i < ROW; i++) {
 
             for (int j = 0; j < COLUMN; j++) {
 
                 if (arrobjTile[i][j].getIntStatus() == Tile.UNPLOWED ||
-                        arrobjTile[i][j].getIntStatus() == Tile.PLOWED ||
-                        arrobjTile[i][j].getIntStatus() == Tile.OCCUPIED ||
-                        arrobjTile[i][j].getIntStatus() == Tile.HARVESTABLE)
+                    arrobjTile[i][j].getIntStatus() == Tile.PLOWED)
                     return true;
             }
         }
-
+        
         return false;
     }
 
 
 
     /**
-     * convertLetterToNumber
-     * - Converts a letter to a number
+     * hasPlantedTiles
+     * - Checks if there are any Occupied or Harvestable tiles on the board.
      *
-     * @param chrLetter Letter to be converted
-     *
-     * @return intNumber Number that corresponds to the letter
+     * @return True if there are usable tiles, false otherwise.
      */
-    public int convertLetterToNumber(char chrLetter) {
+    public boolean hasPlantedTiles() {
 
-        return (int) chrLetter - 65;
+        for (int i = 0; i < ROW; i++) {
+
+            for (int j = 0; j < COLUMN; j++) {
+
+                if (arrobjTile[i][j].getIntStatus() == Tile.OCCUPIED ||
+                        arrobjTile[i][j].getIntStatus() == Tile.HARVESTABLE)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 

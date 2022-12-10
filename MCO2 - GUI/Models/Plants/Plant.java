@@ -8,7 +8,7 @@ public abstract class Plant {
     /* ----- ----- ----- Plant Attributes ----- ----- ----- */
 
     protected String strSeedName;
-    protected int intCropType;
+    protected String strCropType;
     protected int intHarvestTime;
     protected int intWaterReq;
     protected int intWaterLimit;
@@ -190,8 +190,8 @@ public abstract class Plant {
     public String getStrSeedName() {return strSeedName;}
     public void setStrSeedName(String strSeedName) {this.strSeedName = strSeedName;}
 
-    public int getIntCropType() {return intCropType;}
-    public void setIntCropType(int intCropType) {this.intCropType = intCropType;}
+    public String getStrCropType() {return strCropType;}
+    public void setStrCropType(String strCropType) {this.strCropType = strCropType;}
 
     public int getIntHarvestTime() {return intHarvestTime;}
     public void setIntHarvestTime(int intHarvestTime) {this.intHarvestTime = intHarvestTime;}
@@ -218,7 +218,7 @@ public abstract class Plant {
     public void setFltBaseSeedCost(float fltBaseSeedCost) {this.fltBaseSeedCost = fltBaseSeedCost;}
 
     public float getFltBaseProducePrice() {return fltBaseProducePrice;}
-    public void setFltBaseProducePrice(int fltBaseProducePrice) {this.fltBaseProducePrice = fltBaseProducePrice;}
+    public void setFltBaseProducePrice(float fltBaseProducePrice) {this.fltBaseProducePrice = fltBaseProducePrice;}
 
     public float getFltHarvestEXP() {return fltHarvestEXP;}
     public void setFltHarvestEXP(float fltHarvestEXP) {this.fltHarvestEXP = fltHarvestEXP;}

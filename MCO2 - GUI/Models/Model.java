@@ -1,5 +1,6 @@
 package Models;
 
+import Models.Plants.Plant;
 import Models.Plants.Shop;
 import Models.Titles.TitleList;
 
@@ -11,12 +12,17 @@ public class Model {
 
     /* ----- ----- ----- Model Attributes ----- ----- ----- */
 
+    // Classes
     private TitleList objTitleList;
     private Farmer objFarmer;
     private Board objBoard;
     private Shop objShop;
-
     private Tile objSelectedTile;
+    private Plant objSelectedPlant;
+
+    // Values
+    private int intProduceProduced;
+    private float fltHarvestProfit;
 
 
 
@@ -48,20 +54,56 @@ public class Model {
      */
     public boolean isGameOver() {
 
-        // If has live tiles but no money to buy the cheapest seed
-        if (this.objBoard.hasLiveTiles() &&
+        // If Board has Tiles with Plants
+        if (this.objBoard.hasPlantedTiles())
+            return false;
+
+
+        // If has Empty Tiles and no money to buy the cheapest seed
+        else if (this.objBoard.hasEmptyTiles() &&
                 this.objFarmer.getFltObjectCoins() < this.objShop.getCheapestSeedPrice())
             return true;
 
 
-            // If doesn't have live tiles and doesn't have money to use a Shovel
-        else if (!this.objBoard.hasLiveTiles() &&
-                this.objFarmer.getFltObjectCoins() < this.objFarmer.getObjShovel().getFltUseCost()) {
+        // If doesn't have any Usable Tiles and doesn't have money to use a Shovel
+        else if (!this.objBoard.hasEmptyTiles() &&
+                this.objFarmer.getFltObjectCoins() < this.objFarmer.getObjShovel().getFltUseCost())
             return true;
-        }
 
 
         return false;
+    }
+
+
+    /**
+     * getProduceProduced
+     * - This method returns the amount of produce produced by a harvest.
+     *
+     * @return Amount of produce produced by a harvest.
+     */
+    public int getProduceProduced() {
+
+        this.intProduceProduced = this.objSelectedTile.getObjPlant().getProduceQuantity();
+
+        return this.intProduceProduced;
+    }
+
+
+
+    /**
+     * getHarvestProfit
+     * - This method returns the total profit of a harvest.
+     *
+     * @return Total profit of a harvest.
+     */
+    public float getHarvestProfit() {
+
+        this.fltHarvestProfit = this.objSelectedTile.getObjPlant().computeHarvestProfit(this.intProduceProduced,
+                this.objFarmer.getObjCurrentTitle(),
+                this.objSelectedTile.getIntTimesWatered(),
+                this.objSelectedTile.getIntTimesFertilized());
+
+        return this.fltHarvestProfit;
     }
 
 
@@ -80,4 +122,11 @@ public class Model {
 
     public Tile getObjSelectedTile() {return objSelectedTile;}
     public void setObjSelectedTile(Tile objSelectedTile) {this.objSelectedTile = objSelectedTile;}
+    
+    public Plant getObjSelectedPlant() {return objSelectedPlant;}
+    public void setObjSelectedPlant(Plant objSelectedPlant) {this.objSelectedPlant = objSelectedPlant;}
+
+    public int getIntProduceProduced() {return intProduceProduced;}
+
+    public float getFltHarvestProfit() {return fltHarvestProfit;}
 }

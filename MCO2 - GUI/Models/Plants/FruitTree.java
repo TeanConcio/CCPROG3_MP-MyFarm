@@ -46,6 +46,8 @@ public class FruitTree extends Plant {
                 fltBaseSeedCost,
                 fltBaseProducePrice,
                 fltHarvestEXP);
+        
+        this.strCropType = "Fruit Tree";
     }
 
 

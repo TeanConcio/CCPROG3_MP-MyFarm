@@ -82,6 +82,28 @@ public class Shop {
 
         return fltCheapestSeedPrice;
     }
+    
+    
+    
+    /**
+     * getPlant
+     * - Returns the Plant object with the given name.
+     * 
+     * @param strPlantName Name of the Plant.
+     * @return Plant object with the given name.
+     */
+    public Plant getPlant (String strPlantName) {
+
+        for (int i = 0; i < arrobjPlants.size(); i++) {
+
+            if (arrobjPlants.get(i).getStrSeedName().equals(strPlantName)) {
+
+                return arrobjPlants.get(i);
+            }
+        }
+
+        return null;
+    }
 
 
 
@@ -93,9 +115,6 @@ public class Shop {
 
     public ArrayList<Plant> getArrObjPlants() {return arrobjPlants;}
     public void setArrObjPlants(ArrayList<Plant> arrobjPlants) {this.arrobjPlants = arrobjPlants;}
-
-    public Plant getObjPlant(int intPlantIndex) {return arrobjPlants.get(intPlantIndex);}
-    public void setObjPlant(int intPlantIndex, Plant objPlant) {arrobjPlants.set(intPlantIndex, objPlant);}
 
     public void addObjPlant(Plant objPlant) {arrobjPlants.add(objPlant);}
     public void removeObjPlant(int intPlantIndex) {arrobjPlants.remove(intPlantIndex);}

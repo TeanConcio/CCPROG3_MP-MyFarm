@@ -45,6 +45,8 @@ public class Flower extends Plant {
                 fltBaseSeedCost,
                 fltBaseProducePrice,
                 fltHarvestEXP);
+        
+        this.strCropType = "Flower";
     }
 
 

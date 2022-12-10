@@ -36,8 +36,8 @@ public class Farmer {
      */
     public Farmer(FarmerTitle objCurrentTitle) {
          this.objCurrentTitle = objCurrentTitle;
-         this.fltEXP = 0f;
-         this.fltObjectCoins = 100f;
+         this.fltEXP = 2000f;
+         this.fltObjectCoins = 1000f;
     }
 
 

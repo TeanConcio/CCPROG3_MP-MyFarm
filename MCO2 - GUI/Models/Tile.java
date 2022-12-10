@@ -70,6 +70,27 @@ public class Tile {
         this.objPlant = null;
         this.intPlantAge = 0;
     }
+    
+    
+    
+    public boolean canHarvest() {
+
+        // If Model.Tile has no Model.Plants.Plant
+        if (objPlant == null)
+            return false;
+
+        
+        // If Plant is of sufficient age
+        if (intPlantAge == objPlant.getIntHarvestTime())
+
+            // If Plant's Conditions are Met
+            if (intTimesWatered >= objPlant.getIntWaterReq() &&
+                    intTimesFertilized >= objPlant.getIntFertilizerReq())
+                return true;
+        
+        
+        return false;
+    }
 
 
 
