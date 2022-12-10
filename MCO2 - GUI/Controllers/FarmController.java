@@ -69,8 +69,12 @@ public class FarmController implements Controller {
 
 
         // Check Game Over
-        if (this.objModel.isGameOver())
+        System.out.println(this.objModel.isGameOver());
+        if (this.objModel.isGameOver()) {
             objFarmGUI.setBoolGameOver(true);
+            objFarmGUI.makeGameOverPanel();
+        }
+
     }
 
 
@@ -216,64 +220,27 @@ public class FarmController implements Controller {
                         switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getStrSeedName()) {
 
                             case "Turnip":
-                              objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-                              break;
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));
+                                break;
                             case "Carrot":
-                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-//                                    case 2:
-                                 break;
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));
+                                break;
                             case "Potato":
-                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-//                                    case 2:
-//                                    case 3:
-//                                    case 4:
-//                                    case 5:
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/RootCrop.PNG")));
                                 break;
                             case "Rose":
-                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));
                                 break;
                             case "Tulip":
-                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-                                break;
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));                                break;
                             case "Sunflower":
                                 objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));
-
                                 break;
                             case "Mango":
                                 objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));
-//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-//                                    case 2:
-//                                    case 3:
-//                                    case 4:
-//                                    case 5:
-//                                    case 6:
-//                                    case 7:
-//                                    case 8:
-//                                    case 9:
-                                 break;
+                                break;
                             case "Apple":
-                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));//                                switch (objModel.getObjBoard().getTileFromCoords(i, j).getObjPlant().getIntAge())
-//                                    case 0:
-//                                    case 1:
-//                                    case 2:
-//                                    case 3:
-//                                    case 4:
-//                                    case 5:
-//                                    case 6:
-//                                    case 7:
-//                                    case 8:
-//                                    case 9:
+                                objFarmGUI.setTileButtons(i, j, new ImageIcon(getClass().getResource("Assets/Sapling.PNG")));
                                 break;
                         }
                         break;
@@ -326,25 +293,6 @@ public class FarmController implements Controller {
             }
         }
     }
-//    public void updateTile(int n, Tile tile) {
-//        String strStatus = tile.toString();
-//        int intStatus = tile.getStatus();
-//
-//        try {
-//            if(intStatus == Tile.ISHARVESTABLE) {
-//                this.btnlistPlot.get(n).setIcon(new ImageIcon(getClass().getResource("resources/" + strStatus.substring(2) + ".png")));
-//            } else if(intStatus == Tile.ISPLANTED) {
-//                this.btnlistPlot.get(n).setIcon(new ImageIcon(getClass().getResource("resources/Seed.png")));
-//            } else {
-//                this.btnlistPlot.get(n).setIcon(new ImageIcon(getClass().getResource("resources/" + strStatus + ".png")));
-//            }
-//            this.btnlistPlot.get(n).setText("");
-//        } catch (Exception e) {
-//            this.btnlistPlot.get(n).setText(strStatus);
-//        }
-//    }
-
-
 
 
     /* ----- ----- Method Overrides ----- ----- */
