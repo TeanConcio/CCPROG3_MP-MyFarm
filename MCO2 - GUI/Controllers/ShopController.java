@@ -44,6 +44,7 @@ public class ShopController implements Controller {
 
 
         // Add ActionListeners to the buttons
+        objShopGUI.setActionCommands();
         objShopGUI.setActionListener(this);
 
 
@@ -223,19 +224,20 @@ public class ShopController implements Controller {
                         objModel.getObjFarmer(),
                         objModel.getObjBoard().getArrObjTile());
                 objShopGUI.dispose();
-                objShopGUI.setVisible(false);
                 objFarmGUI.setEnabled(true);
+                objFarmGUI.repaint();
+                objFarmGUI.requestFocus();
                 break;
 
             case "Cancel":
-                objShopGUI.setVisible(false);
                 objShopGUI.dispose();
                 objFarmGUI.setEnabled(true);
+                objFarmGUI.requestFocus();
                 break;
         }
 
         // Update GUI
-        updateView();
+        this.updateView();
     }
 
 
